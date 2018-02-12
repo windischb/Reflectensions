@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>doob.Reflectensions</RootNamespace>
+    <Authors>Bernhard Windisch</Authors>
+    <Company>-</Company>
+    <PackageProjectUrl>https://github.com/windischb/Reflectensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/windischb/Reflectensions</RepositoryUrl>
+    <PackageId>doob.Reflectensions</PackageId>
   </PropertyGroup>
 
 </Project>

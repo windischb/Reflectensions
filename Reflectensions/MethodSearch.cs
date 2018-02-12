@@ -1,0 +1,126 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using doob.Reflectensions.HelperClasses;
+
+namespace doob.Reflectensions
+{
+    public class MethodSearch
+    {
+        public MethodSearchContext Context { get; internal set; } = new MethodSearchContext();
+
+        internal MethodSearch() {
+
+            Context.AccessModifier = MethodAccessModifier.Any;
+        }
+
+        public static MethodSearch Create() {
+            return new MethodSearch();
+        }
+
+        public MethodSearch SetOwnerType(string typeName) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.OwnerType;
+            Context.OwnerType = SignatureType.FromTypeString(typeName);
+            return this;
+        }
+        public MethodSearch SetOwnerType(Type type) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.OwnerType;
+            Context.OwnerType = SignatureType.FromType(type);
+            return this;
+        }
+
+        public MethodSearch SetMethodType(string methodType) {
+            return SetMethodType(Enum<MethodType>.Find(methodType));
+        }
+        public MethodSearch SetMethodType(MethodType type) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.MethodType;
+            Context.MethodType = type;
+            return this;
+        }
+        
+        public MethodSearch SetAccessModifier(string accessModifier) {
+            MethodAccessModifier _enum = MethodAccessModifier.Unknown;
+
+            if (accessModifier != null) {
+                _enum = Enum<MethodAccessModifier>.Find(accessModifier);
+                if (accessModifier.Contains(" ") && _enum == MethodAccessModifier.Unknown) {
+                    accessModifier = string.Join(" ", accessModifier.Split(' ').Reverse());
+                    _enum = Enum<MethodAccessModifier>.Find(accessModifier);
+                }
+            }
+
+            return SetAccessModifier(_enum);
+        }
+        public MethodSearch SetAccessModifier(MethodAccessModifier accessModifier) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.AccessModifier;
+            Context.AccessModifier = accessModifier;
+            return this;
+        }
+
+        public MethodSearch SetReturnType(string typeName) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.ReturnType;
+            Context.ReturnType = SignatureType.FromTypeString(typeName);
+            return this;
+        }
+        public MethodSearch SetReturnType(Type type) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.ReturnType;
+            Context.ReturnType = SignatureType.FromType(type);
+            return this;
+        }
+
+        public MethodSearch SetMethodName(string methodName) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.MethodName;
+            if (methodName.Contains(".")) {
+                throw new ArgumentException("MethodName can't contain '.'");
+            }
+            Context.MethodName = methodName;
+            return this;
+        }
+
+        public MethodSearch SetGenericArguments(params Type[] arguments) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.GenericArguments;
+            Context.GenericArguments = arguments?.Select(SignatureType.FromType).ToList() ?? new List<SignatureType>();
+            return null;
+        }
+
+        public MethodSearch SetParameterTypes(params object[] parameters) {
+            
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.ParameterTypes;
+            Context.ParameterTypes = parameters.ToParameterTypes()?.Select(SignatureType.FromType).ToList() ?? new List<SignatureType>();
+            return this;
+        }
+        public MethodSearch SetParameterTypes(params Type[] parameterTypes) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.ParameterTypes;
+            Context.ParameterTypes = parameterTypes?.Select(SignatureType.FromType).ToList() ?? new List<SignatureType>();
+            return this;
+        }
+
+
+        public MethodSignature ToSignature() {
+
+            return Context.ConvertTo<MethodSignature>();
+        }
+
+        public static implicit operator MethodSignature(MethodSearch search) {
+            return search.ToSignature();
+        }
+    }
+
+    public class MethodSearchContext : MethodSummary {
+
+        public MethodSearchFlags SearchFor { get; internal set; }
+    }
+
+    [Flags]
+    public enum MethodSearchFlags {
+        None = 0,
+        OwnerType = 1,
+        AccessModifier = 2,
+        MethodType = 4,
+        ReturnType = 8,
+        MethodName = 16,
+        GenericArguments = 32,
+        ParameterTypes = 64 
+    }
+}
