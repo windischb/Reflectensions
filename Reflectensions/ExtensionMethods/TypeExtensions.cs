@@ -136,26 +136,31 @@ namespace doob.Reflectensions {
 
         #endregion
 
-        public static IEnumerable<Type> HasAttribute<T>(this IEnumerable<Type> methodInfos, bool inherit = false) where T : Attribute {
-            return methodInfos.Where(m => m.HasAttribute<T>(inherit, false));
+        public static IEnumerable<Type> HasAttribute<T>(this IEnumerable<Type> types, bool inherit = false) where T : Attribute {
+            return types.Where(m => m.HasAttribute<T>(inherit, false));
         }
-        public static IEnumerable<Type> HasAttribute(this IEnumerable<Type> methodInfos, Type attributeType, bool inherit = false) {
-            return methodInfos.Where(m => m.HasAttribute(attributeType, inherit, false));
+        public static IEnumerable<Type> HasAttribute(this IEnumerable<Type> types, Type attributeType, bool inherit = false) {
+            return types.Where(m => m.HasAttribute(attributeType, inherit, false));
         }
 
-        public static IEnumerable<(Type Type, T Attribute)> WithAttribute<T>(this IEnumerable<Type> methodInfos, bool inherit = false) where T : Attribute {
-            return methodInfos.HasAttribute<T>().Select(t => (t, t.GetCustomAttribute<T>()));
+        public static IEnumerable<(Type Type, T Attribute)> WithAttribute<T>(this IEnumerable<Type> types, bool inherit = false) where T : Attribute {
+            return types.HasAttribute<T>().Select(t => (t, t.GetCustomAttribute<T>()));
         }
-        public static IEnumerable<(Type Type, Attribute Attribute)> WithAttribute(this IEnumerable<Type> methodInfos, Type attributeType, bool inherit = false) {
+        public static IEnumerable<(Type Type, Attribute Attribute)> WithAttribute(this IEnumerable<Type> types, Type attributeType, bool inherit = false) {
 
             if (!attributeType.InheritFromClass<Attribute>(true, false)) {
                 throw new ArgumentException($"Parameter '{nameof(attributeType)}' be an Attribute Type!");
             }
 
-            return methodInfos.HasAttribute(attributeType).Select(t => (t, t.GetCustomAttribute(attributeType)));
+            return types.HasAttribute(attributeType).Select(t => (t, t.GetCustomAttribute(attributeType)));
         }
 
-
+        public static IEnumerable<Type> InheritFromClass(this IEnumerable<Type> types, Type from, bool inherit = false) {
+            return types.Where(t => t.InheritFromClass(from, inherit, false));
+        }
+        public static IEnumerable<Type> InheritFromClass<T>(this IEnumerable<Type> types, bool inherit = false) {
+            return types.Where(t => t.InheritFromClass<T>(inherit, false));
+        }
 
         #region Query
 
