@@ -111,7 +111,7 @@ namespace doob.Reflectensions {
         }
 
         public static bool Equals<T>(this Type type) {
-            return type.Equals(typeof(T));
+            return type == typeof(T);
         }
         public static bool NotEquals<T>(this Type type) {
             return !type.Equals<T>();
@@ -136,10 +136,30 @@ namespace doob.Reflectensions {
 
         #endregion
 
+        public static IEnumerable<Type> HasAttribute<T>(this IEnumerable<Type> methodInfos, bool inherit = false) where T : Attribute {
+            return methodInfos.Where(m => m.HasAttribute<T>(inherit, false));
+        }
+        public static IEnumerable<Type> HasAttribute(this IEnumerable<Type> methodInfos, Type attributeType, bool inherit = false) {
+            return methodInfos.Where(m => m.HasAttribute(attributeType, inherit, false));
+        }
+
+        public static IEnumerable<(Type Type, T Attribute)> WithAttribute<T>(this IEnumerable<Type> methodInfos, bool inherit = false) where T : Attribute {
+            return methodInfos.HasAttribute<T>().Select(t => (t, t.GetCustomAttribute<T>()));
+        }
+        public static IEnumerable<(Type Type, Attribute Attribute)> WithAttribute(this IEnumerable<Type> methodInfos, Type attributeType, bool inherit = false) {
+
+            if (!attributeType.InheritFromClass<Attribute>(true, false)) {
+                throw new ArgumentException($"Parameter '{nameof(attributeType)}' be an Attribute Type!");
+            }
+
+            return methodInfos.HasAttribute(attributeType).Select(t => (t, t.GetCustomAttribute(attributeType)));
+        }
+
+
 
         #region Query
 
-       
+
         public static IEnumerable<MethodInfo> GetImplictOperatorMethods(this Type type, bool throwOnError = true) {
             if (Throw.IfIsNull(type, nameof(type), throwOnError))
                 return new List<MethodInfo>();

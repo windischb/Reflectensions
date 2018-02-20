@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://github.com/windischb/Reflectensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/windischb/Reflectensions</RepositoryUrl>
     <PackageId>doob.Reflectensions</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.1.4</Version>
   </PropertyGroup>
 
 </Project>

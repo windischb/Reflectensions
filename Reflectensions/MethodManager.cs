@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using doob.Reflectensions.ExtensionMethods;
 
 namespace doob.Reflectensions {
-    public class MethodManager<TBox> where TBox : IMethodBox, new() {
+    public class MethodManager<TBox> where TBox : IMethodBox {
 
         private readonly MethodBoxCache<TBox> _methodInfoBoxCache = new MethodBoxCache<TBox>();
 
@@ -27,6 +27,20 @@ namespace doob.Reflectensions {
             Options = optionsBuilder;
         }
 
+        public void SetMethodBoxBuilderAction(Action<MethodBoxBuilderContext, MethodBoxBuilderResult<TBox>> builderfunction) {
+            _methodBoxBuilderAction = builderfunction;
+        }
+
+        public TBox RegisterMethod(MethodInfo methodInfo) {
+            var box = BuildMethod(MethodBoxBuilderContext.Build(methodInfo, Options));
+            return _methodInfoBoxCache.Add(box);
+        }
+
+        public TBox RegisterMethod(TBox methodBox, MethodSearch customSearch = null) {
+
+            return _methodInfoBoxCache.Add(customSearch ?? MethodSignature.FromMethodInfo(methodBox.MethodInfo), methodBox);
+        }
+
         private Action<MethodBoxBuilderContext, MethodBoxBuilderResult<TBox>> _methodBoxBuilderAction;
 
         private static object[] BuildParametersArray(MethodInfo methodInfo, IEnumerable<object> parameters) {
@@ -44,18 +58,20 @@ namespace doob.Reflectensions {
             return pa;
         }
 
-        private TBox FindMethod(MethodSearch search) {
+
+        
+        private TBox _FindMethod(MethodSearch search) {
             var bindingFlags = search.Context.AccessModifier.ToBindingFlags().Add(MethodType.Instance.ToBindingFlags());
             var methodInfo = search.Context.OwnerType.FoundMatchingType.GetMethods(bindingFlags).FindBestMatchingMethodInfo(search);
             return BuildMethod(MethodBoxBuilderContext.Build(methodInfo, Options)).MethodInfoBox;
         }
 
-        private TBox FindCachedMethod(MethodSearch search) {
+        public TBox FindMethod(MethodSearch search) {
 
             if (Options.EnableCache) {
-                return _methodInfoBoxCache.GetOrAdd(search, () => FindMethod(search));
+                return _methodInfoBoxCache.GetOrAdd(search, () => _FindMethod(search));
             } else {
-                return FindMethod(search);
+                return _FindMethod(search);
             }
 
         }
@@ -71,13 +87,10 @@ namespace doob.Reflectensions {
             return boxkit;
         }
 
-        public void SetMethodBoxBuilderAction(Action<MethodBoxBuilderContext, MethodBoxBuilderResult<TBox>> builderfunction) {
-            _methodBoxBuilderAction = builderfunction;
-        }
-
+        
 
         private (MethodInfo MethodInfo, object[] Parameters) GetMethodInfo(InvokeBuilder builder) {
-            var methodInfoBox = FindCachedMethod(builder.Context);
+            var methodInfoBox = FindMethod(builder.Context);
             MethodInfo methodInfo = methodInfoBox.MethodInfo;
             if (builder.Context.Context.GenericArguments.Any()) {
                 methodInfo = methodInfo.MakeGenericMethod(builder.Context.Context.GenericArguments.Select(a => a.FoundMatchingType).ToArray());

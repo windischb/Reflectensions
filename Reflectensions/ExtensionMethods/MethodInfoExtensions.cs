@@ -191,7 +191,7 @@ namespace doob.Reflectensions {
         public static IEnumerable<(MethodInfo MethodInfo, T Attribute)> WithAttribute<T>(this IEnumerable<MethodInfo> methodInfos, bool inherit = false) where T : Attribute {
             return methodInfos.HasAttribute<T>().Select(t => (t, t.GetCustomAttribute<T>()));
         }
-        public static IEnumerable<(MethodInfo Type, Attribute Attribute)> WithAttribute(this IEnumerable<MethodInfo> methodInfos, Type attributeType, bool inherit = false) {
+        public static IEnumerable<(MethodInfo MethodInfo, Attribute Attribute)> WithAttribute(this IEnumerable<MethodInfo> methodInfos, Type attributeType, bool inherit = false) {
 
             if (!TypeExtensions.InheritFromClass<Attribute>(attributeType, true, false)) {
                 throw new ArgumentException($"Parameter '{nameof(attributeType)}' be an Attribute Type!");

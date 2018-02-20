@@ -4,7 +4,7 @@
     {
         public TBox MethodInfoBox { get; set; }
 
-        public string CustomCachingKey { get; set; }
+        public MethodSearch CustomSearch { get; set; }
 
         private bool _ignore;
         public bool Ignore {

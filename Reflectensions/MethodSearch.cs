@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using doob.Reflectensions.HelperClasses;
 
@@ -27,6 +28,12 @@ namespace doob.Reflectensions
         public MethodSearch SetOwnerType(Type type) {
             Context.SearchFor = Context.SearchFor | MethodSearchFlags.OwnerType;
             Context.OwnerType = SignatureType.FromType(type);
+            return this;
+        }
+
+        public MethodSearch SetOwnerAlias(string alias) {
+            Context.SearchFor = Context.SearchFor | MethodSearchFlags.OwnerAlias;
+            Context.OwnerTypeAlias = alias;
             return this;
         }
 
@@ -102,8 +109,27 @@ namespace doob.Reflectensions
             return Context.ConvertTo<MethodSignature>();
         }
 
+        public static MethodSearch FromSignature(MethodSignature signature) {
+            var search = new MethodSearch();
+            search.Context = signature.ConvertTo<MethodSearchContext>();
+            
+            return search;
+        }
+
+        public static MethodSearch FromMethodInfo(MethodInfo methodInfo) {
+            return MethodSearch.FromSignature(MethodSignature.FromMethodInfo(methodInfo));
+        }
+
         public static implicit operator MethodSignature(MethodSearch search) {
             return search.ToSignature();
+        }
+
+        public static implicit operator MethodSearch(MethodSignature signature) {
+            return MethodSearch.FromSignature(signature);
+        }
+
+        public override string ToString() {
+            return Context.ToString();
         }
     }
 
@@ -121,6 +147,7 @@ namespace doob.Reflectensions
         ReturnType = 8,
         MethodName = 16,
         GenericArguments = 32,
-        ParameterTypes = 64 
+        ParameterTypes = 64,
+        OwnerAlias = 128
     }
 }

@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 
 namespace doob.Reflectensions.ExtensionMethods
 {
-    internal static class EnumExtensions
+    public static class EnumExtensions
     {
 
-        internal static string GetName(this Enum enumValue) {
+        public static string GetName(this Enum enumValue) {
 
             return enumValue.GetType()
                             .GetTypeInfo()

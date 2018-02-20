@@ -209,7 +209,7 @@ namespace doob.Reflectensions
 
             var parametersStr = parameters.Any() ? $"({string.Join(", ", parameters)})" : null;
 
-            return $"{owner} {accessModifier} {returnType} {methodName}{genericArguments}{parametersStr}".Trim();
+            return Regex.Replace($"{owner} {accessModifier} {returnType} {methodName}{genericArguments}{parametersStr}".Trim(), @"\s+", " ");
         }
     }
 }
