@@ -49,6 +49,7 @@ namespace doob.Reflectensions {
             var pa = methodInfo.GetParameters().Select((p, i) => {
 
                 if (enumerable.Length > i) {
+
                     return enumerable[i] == null ? null : enumerable[i].CastTo(p.ParameterType);
                 }
 

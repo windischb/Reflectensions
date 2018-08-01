@@ -1,14 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <RootNamespace>doob.Reflectensions</RootNamespace>
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
     <PackageProjectUrl>https://github.com/windischb/Reflectensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/windischb/Reflectensions</RepositoryUrl>
     <PackageId>doob.Reflectensions</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.5.2</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0">
+    </PackageReference>
+  </ItemGroup>
 
 </Project>

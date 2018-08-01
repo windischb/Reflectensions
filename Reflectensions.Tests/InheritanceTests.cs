@@ -10,6 +10,7 @@ namespace doob.Reflectensions.Tests
         [Theory]
         [InlineData(typeof(Autobot), typeof(Transformer))]
         [InlineData(typeof(Decepticon), typeof(Transformer))]
+        [InlineData(typeof(Transformer<Camaro>), typeof(Transformer<>))]
         public void From_InheritFromClassTo(Type from, Type to) {
             var inherit = from.InheritFromClass(to);
             Assert.True(inherit);

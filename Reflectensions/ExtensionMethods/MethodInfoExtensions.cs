@@ -91,7 +91,7 @@ namespace doob.Reflectensions {
             Throw.IfIsNull(methodInfo, nameof(methodInfo));
             Throw.IfIsNull(returnType, nameof(returnType));
 
-            return methodInfo.ReturnType.Equals(returnType);
+            return methodInfo.ReturnType == returnType;
         }
 
         public static MethodAccessModifier GetAccessModifier(this MethodInfo methodInfo) {

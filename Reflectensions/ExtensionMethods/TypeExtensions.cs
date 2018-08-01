@@ -44,6 +44,9 @@ namespace doob.Reflectensions {
             if (Throw.IfIsNull(type, nameof(type), throwOnError))
                 return false;
 
+            if (type == typeof(string))
+                return false;
+
             if (IsDictionaryType(type))
                 return false;
 
@@ -84,7 +87,7 @@ namespace doob.Reflectensions {
             if (!inherit)
                 maximumlevel = 0;
 
-            return TypeExtensions.InheritFromClassLevel(type, from, maximumlevel, throwOnError) > -1;
+            return type.InheritFromClassLevel(from, maximumlevel, throwOnError) > -1;
 
         }
 
@@ -216,12 +219,21 @@ namespace doob.Reflectensions {
 
                 var level = 0;
                 bool found = type == from;
-
                 var loockupType = type;
+
+                if (loockupType.IsGenericType) {
+                    found = loockupType.GetGenericTypeDefinition() == from;
+                }
+                
                 while (loockupType != null && !found && (!maximumLevel.HasValue || level >= maximumLevel.Value)) {
                     level++;
+
                     found = loockupType.BaseType == from;
                     loockupType = loockupType.BaseType;
+                    if (loockupType?.IsGenericType == true) {
+                        found = loockupType.GetGenericTypeDefinition() == from;
+                    }
+                    
                 }
 
                 if (!found)
