@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doob.Reflectensions
+namespace Reflectensions.Ratings
 {
     public abstract class BaseRating<T> : IRating where T : BaseRating<T> {
 

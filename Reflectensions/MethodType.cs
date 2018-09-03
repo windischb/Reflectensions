@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace doob.Reflectensions
+namespace Reflectensions
 {
-    [Flags]
+
     public enum MethodType
     {
 
@@ -23,11 +20,11 @@ namespace doob.Reflectensions
 
             BindingFlags flags = BindingFlags.Default;
 
-            if (methodType.HasFlag(MethodType.Instance))
-                flags = flags | BindingFlags.Instance;
+            if (methodType == MethodType.Instance)
+                return BindingFlags.Instance;
 
-            if (methodType.HasFlag(MethodType.Static))
-                flags = flags | BindingFlags.Static;
+            if (methodType == MethodType.Static)
+                return BindingFlags.Static;
 
             return flags;
 

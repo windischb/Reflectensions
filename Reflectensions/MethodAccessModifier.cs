@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace doob.Reflectensions
+namespace Reflectensions
 {
     [Flags]
     public enum MethodAccessModifier

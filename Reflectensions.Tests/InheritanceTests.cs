@@ -1,8 +1,9 @@
 ﻿using System;
-using doob.Reflectensions.Tests.Classes;
+using Reflectensions.ExtensionMethods;
+using Reflectensions.Tests.Classes;
 using Xunit;
 
-namespace doob.Reflectensions.Tests
+namespace Reflectensions.Tests
 {
     public class InheritanceTests
     {
@@ -10,8 +11,10 @@ namespace doob.Reflectensions.Tests
         [Theory]
         [InlineData(typeof(Autobot), typeof(Transformer))]
         [InlineData(typeof(Decepticon), typeof(Transformer))]
-        [InlineData(typeof(Transformer<Camaro>), typeof(Transformer<>))]
+        
         public void From_InheritFromClassTo(Type from, Type to) {
+
+           
             var inherit = from.InheritFromClass(to);
             Assert.True(inherit);
         }
@@ -19,6 +22,8 @@ namespace doob.Reflectensions.Tests
 
         [Theory]
         [InlineData(typeof(Human), typeof(Transformer))]
+        [InlineData(typeof(Transformer<Camaro>), typeof(Transformer<>))]
+        [InlineData(typeof(Autobot), typeof(Autobot))]
         public void From_InheritNOTFromClassTo(Type from, Type to) {
             var inherit = from.InheritFromClass(to);
             Assert.False(inherit);

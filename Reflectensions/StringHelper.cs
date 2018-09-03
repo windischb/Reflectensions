@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace doob.Reflectensions
+namespace Reflectensions
 {
     public static class StringExtensions
     {
@@ -71,11 +70,6 @@ namespace doob.Reflectensions
             return diff;
         }
 
-        public static string ToNull(this string value) {
-            if (String.IsNullOrWhiteSpace(value))
-                return null;
-
-            return value;
-        }
+        
     }
 }

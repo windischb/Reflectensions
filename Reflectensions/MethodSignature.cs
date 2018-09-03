@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using System.Text;
+using Reflectensions.ExtensionMethods;
 
-namespace doob.Reflectensions {
+namespace Reflectensions {
     public class MethodSignature : MethodSummary {
        
         public static MethodSignature FromMethodInfo(MethodInfo methodInfo) {

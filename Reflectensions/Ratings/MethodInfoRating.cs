@@ -1,4 +1,4 @@
-﻿namespace doob.Reflectensions {
+﻿namespace Reflectensions.Ratings {
     public class MethodInfoRating : BaseRating<MethodInfoRating> {
 
         public MethodNameRating MethodNameRating { get; private set; }

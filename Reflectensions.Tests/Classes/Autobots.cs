@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-
-namespace doob.Reflectensions.Tests.Classes
+﻿namespace Reflectensions.Tests.Classes
 {
     public class Autobot : Transformer
     {

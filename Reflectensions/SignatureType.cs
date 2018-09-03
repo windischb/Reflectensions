@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using doob.Reflectensions.Helpers;
+using Reflectensions.ExtensionMethods;
+using Reflectensions.Helpers;
 
-namespace doob.Reflectensions {
+namespace Reflectensions {
 
     public class SignatureType {
 
@@ -12,6 +13,7 @@ namespace doob.Reflectensions {
         public Type FoundMatchingType { get; private set; }
         public string GenericName { get; private set; }
 
+        public bool IsStatic => FoundMatchingType.IsStatic();
 
         private SignatureType(string name) {
 
@@ -24,6 +26,7 @@ namespace doob.Reflectensions {
                 Name = name;
             } else {
                 Name = FoundMatchingType.ToString();
+                
             }
 
         }
@@ -33,6 +36,7 @@ namespace doob.Reflectensions {
             Name = type.ToString();
             IsGeneric = type.IsGenericParameter;
             FoundMatchingType = type;
+            
         }
 
         private SignatureType(ParameterInfo parameterInfo) {

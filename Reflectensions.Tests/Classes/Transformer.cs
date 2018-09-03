@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace doob.Reflectensions.Tests.Classes
+namespace Reflectensions.Tests.Classes
 {
     public class Transformer : ITransformer  {
 

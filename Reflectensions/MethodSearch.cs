@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using doob.Reflectensions.HelperClasses;
+using Reflectensions.ExtensionMethods;
+using Reflectensions.HelperClasses;
 
-namespace doob.Reflectensions
+namespace Reflectensions
 {
     public class MethodSearch
     {
@@ -23,11 +23,29 @@ namespace doob.Reflectensions
         public MethodSearch SetOwnerType(string typeName) {
             Context.SearchFor = Context.SearchFor | MethodSearchFlags.OwnerType;
             Context.OwnerType = SignatureType.FromTypeString(typeName);
+            if (Context.OwnerType.IsStatic) {
+                SetMethodType(MethodType.Static);
+            }
             return this;
         }
+        public MethodSearch SetOwnerType(object instance) {
+            if (instance == null)
+                return this;
+
+            if (instance is Type type) {
+                return SetOwnerType(type);
+            }
+            return SetOwnerType(instance.GetType());
+        }
         public MethodSearch SetOwnerType(Type type) {
+            if (type == null)
+                return this;
+
             Context.SearchFor = Context.SearchFor | MethodSearchFlags.OwnerType;
             Context.OwnerType = SignatureType.FromType(type);
+            if (Context.OwnerType.IsStatic) {
+                SetMethodType(MethodType.Static);
+            }
             return this;
         }
 
@@ -79,7 +97,10 @@ namespace doob.Reflectensions
         public MethodSearch SetMethodName(string methodName) {
             Context.SearchFor = Context.SearchFor | MethodSearchFlags.MethodName;
             if (methodName.Contains(".")) {
-                throw new ArgumentException("MethodName can't contain '.'");
+                var lastDot = methodName.LastIndexOf(".");
+                var typeName = methodName.Substring(0, lastDot);
+                SetOwnerType(typeName);
+                methodName = methodName.Substring(lastDot).Trim('.');
             }
             Context.MethodName = methodName;
             return this;

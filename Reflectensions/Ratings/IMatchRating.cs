@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doob.Reflectensions
+namespace Reflectensions.Ratings
 {
     public interface IRating : IComparable<IRating> {
 

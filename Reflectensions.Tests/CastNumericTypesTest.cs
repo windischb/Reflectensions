@@ -1,7 +1,8 @@
 ﻿using System;
+using Reflectensions.ExtensionMethods;
 using Xunit;
 
-namespace doob.Reflectensions.Tests
+namespace Reflectensions.Tests
 {
     public class CastNumericTypesTest
     {

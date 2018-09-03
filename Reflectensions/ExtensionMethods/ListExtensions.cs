@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace doob.Reflectensions
+namespace Reflectensions.ExtensionMethods
 {
     public static class ListExtensions
     {

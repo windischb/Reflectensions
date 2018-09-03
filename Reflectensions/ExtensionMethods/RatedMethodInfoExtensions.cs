@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using doob.Reflectensions.Exceptions;
-using doob.Reflectensions.HelperClasses;
+using Reflectensions.Exceptions;
+using Reflectensions.HelperClasses;
 
-namespace doob.Reflectensions.ExtensionMethods
+namespace Reflectensions.ExtensionMethods
 {
     public static class RatedMethodInfoExtensions
     {

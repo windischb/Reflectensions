@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using doob.Reflectensions.ExtensionMethods;
-using doob.Reflectensions.HelperClasses;
+using Reflectensions.ExtensionMethods;
+using Reflectensions.HelperClasses;
+using Reflectensions.Ratings;
 
-namespace doob.Reflectensions
+namespace Reflectensions
 {
     public class MethodSummary
     {
@@ -25,6 +25,8 @@ namespace doob.Reflectensions
 
             var result = new MethodInfoRating();
 
+
+            
             if (searchFlags.HasFlag(MethodSearchFlags.OwnerType)) {
                 if (this.OwnerType.FoundMatchingType != search.OwnerType.FoundMatchingType) {
                     return result.SetFailed();
@@ -127,7 +129,7 @@ namespace doob.Reflectensions
 
         public static MethodSummary FromString(string signature) {
 
-            var regex = new Regex(@"^(((\[(?<OwnerTypeAlias>\w*)\])?(?<OwnerType>\S+)?)?(\s)?(?<AccessModifier>.*)?\s)?(?<ReturnType>\S+)\s(\[(?<MethodNameAlias>\w*)\])?(?<MethodName>\w*)([\[\<](?<GenericArguments>.*)[\]\>])?\((?<ParameterTypes>.*)\)");
+            var regex = new Regex(@"^(((\[(?<OwnerTypeAlias>\w*)\])?(?<OwnerType>:?<MethodType>\S+)?)?(\s)?(?<AccessModifier>.*)?\s)?(?<ReturnType>\S+)\s(\[(?<MethodNameAlias>\w*)\])?(?<MethodName>\w*)([\[\<](?<GenericArguments>.*)[\]\>])?\((?<ParameterTypes>.*)\)");
 
             var match = regex.Match(signature);
 
@@ -170,6 +172,7 @@ namespace doob.Reflectensions
 
             msig.MethodNameAlias = match.Groups["MethodNameAlias"]?.Value;
             msig.OwnerTypeAlias = match.Groups["OwnerTypeAlias"]?.Value;
+            msig.MethodType = Enum<MethodType>.Find(match.Groups["MethodType"]?.Value);
             return msig;
 
         }
@@ -178,6 +181,7 @@ namespace doob.Reflectensions
 
             var result = new T() {
                 OwnerType = OwnerType,
+                MethodType = MethodType,
                 MethodName = MethodName,
                 ParameterTypes = ParameterTypes,
                 GenericArguments = GenericArguments,
@@ -209,7 +213,7 @@ namespace doob.Reflectensions
 
             var parametersStr = parameters.Any() ? $"({string.Join(", ", parameters)})" : null;
 
-            return Regex.Replace($"{owner} {accessModifier} {returnType} {methodName}{genericArguments}{parametersStr}".Trim(), @"\s+", " ");
+            return Regex.Replace($"{owner}:{MethodType.GetName()} {accessModifier} {returnType} {methodName}{genericArguments}{parametersStr}".Trim(), @"\s+", " ");
         }
     }
 }

@@ -2,16 +2,22 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <RootNamespace>doob.Reflectensions</RootNamespace>
+    <RootNamespace>Reflectensions</RootNamespace>
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
     <PackageProjectUrl>https://github.com/windischb/Reflectensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/windischb/Reflectensions</RepositoryUrl>
-    <PackageId>doob.Reflectensions</PackageId>
-    <Version>1.5.2</Version>
+    <PackageId>Reflectensions</PackageId>
+    <Version>2.0.5</Version>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="LibLog\LibLog.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0">
     </PackageReference>
   </ItemGroup>

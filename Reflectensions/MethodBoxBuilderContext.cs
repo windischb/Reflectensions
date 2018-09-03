@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace doob.Reflectensions {
+namespace Reflectensions {
 
     public class MethodBoxBuilderContext {
 

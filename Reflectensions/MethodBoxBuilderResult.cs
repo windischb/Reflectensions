@@ -1,4 +1,4 @@
-﻿namespace doob.Reflectensions
+﻿namespace Reflectensions
 {
     public class MethodBoxBuilderResult<TBox> where TBox : IMethodBox
     {
