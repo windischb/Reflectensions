@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace doob.Reflectensions {
+namespace Reflectensions {
     internal class MethodBoxCache<TBox> where TBox : IMethodBox {
         private readonly Dictionary<string, TBox> _methodInfoBoxes = new Dictionary<string, TBox>();
 

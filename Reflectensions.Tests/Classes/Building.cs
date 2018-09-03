@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace doob.Reflectensions.Tests.Classes
+namespace Reflectensions.Tests.Classes
 {
     public class Building : CamouflageMode
     {
         private bool _mainDoorIsOpen;
         private int _floors;
+
+       public int WindowCount { get; set; }
+        public bool HasGarden { get; set; }
 
         public Building() { }
 

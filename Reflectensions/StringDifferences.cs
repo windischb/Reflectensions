@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace doob.Reflectensions {
+namespace Reflectensions {
 
     public class StringDifferences {
 

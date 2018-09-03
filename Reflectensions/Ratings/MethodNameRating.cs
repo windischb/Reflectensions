@@ -1,4 +1,4 @@
-﻿namespace doob.Reflectensions
+﻿namespace Reflectensions.Ratings
 {
     public class MethodNameRating : BaseRating<MethodNameRating> {
         public int? MethodNameMismatches => _namingDiff;

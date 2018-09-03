@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace doob.Reflectensions.ExtensionMethods
+namespace Reflectensions.ExtensionMethods
 {
     public static class ActionExtensions
     {

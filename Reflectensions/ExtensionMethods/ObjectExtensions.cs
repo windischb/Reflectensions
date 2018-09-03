@@ -1,82 +1,125 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 
-namespace doob.Reflectensions
-{
-    public static class ObjectExtensions
-    {
+namespace Reflectensions.ExtensionMethods {
+    public static class ObjectExtensions {
 
-        public static T CastTo<T>(this object @object, bool throwOnError = true, T returnOnError = default(T) ) {
-            return (T)CastTo(@object, typeof(T), throwOnError, returnOnError);
+        public static T ConvertTo<T>(this object @object, bool throwOnError = true, T returnOnError = default(T)) {
+            return (T)ConvertTo(@object, typeof(T), throwOnError, returnOnError);
+            
         }
 
-        public static object CastTo(this object @object, Type outType, bool throwOnError = true, object returnOnError = null) {
-            if (@object == null)
-                return null;
+        public static object ConvertTo(this object @object, Type outType, bool throwOnError = true, object returnOnError = null) {
+
+           
+            var result = TryConvertTo(@object, outType, out var outValue);
+            if (result)
+                return outValue;
+
+
+            if (!throwOnError) {
+                if (returnOnError != null) {
+                    return returnOnError;
+                }
+                return Activator.CreateInstance(outType);
+            }
+            throw new InvalidCastException($"Can't cast object of Type '{@object.GetType()}' to '{outType}'.");
+
+        }
+
+        public static bool TryConvertTo<T>(this object @object, out T outValue) {
+
+
+            var result = TryConvertTo(@object, typeof(T), out var _outValue);
+
+            outValue = _outValue != null ? (T)_outValue : default(T);
+            return result;
+        }
+
+        public static bool TryConvertTo(this object @object, Type outType, out object outValue) {
+
+
+            if (@object == null) {
+                outValue = null;
+                return false;
+            }
+
 
             var t = @object.GetType();
 
+            if (t == outType) {
+                outValue = @object;
+                return true;
+            }
+
+            if (t.ImplementsInterface(outType, false) || t.InheritFromClass(outType, true)) {
+                outValue = @object;
+                return true;
+            }
+
+
             try {
 
+
+
                 if (@object.GetType().ImplementsInterface<IConvertible>() && outType.ImplementsInterface<IConvertible>()) {
-                    return Convert.ChangeType(@object, outType);
+                    outValue = Convert.ChangeType(@object, outType);
+                    return true;
                 }
-
-                if (t == outType) {
-                    return @object;
-                }
-
-                if (t.ImplementsInterface(outType, false) || t.InheritFromClass(outType, true))
-                    return @object;
-
-
 
                 var method = t.GetImplicitCastMethodTo(outType);
 
                 if (method != null) {
-                    return method.Invoke(null, new object[] {
+                    outValue = method.Invoke(null, new object[] {
                         @object
                     });
+                    return true;
                 }
+
+
 
                 if (outType.IsNullableType()) {
                     var underlingType = Nullable.GetUnderlyingType(outType);
-                    try {
-                        var casted = @object.CastTo(underlingType);
-                        //var nullable = Activator.CreateInstance(outType, casted);
-                        //var nt = nullable.GetType().IsNullableType();
-                        ////nullable.GetType().GetProperty("Value").SetValue(nullable, casted);
-                        //var valueExpr = Expression.Constant(casted, outType);
-                        //var nt1 = valueExpr.Value.GetType().IsNullableType();
-                        return casted;
-                    } catch (Exception e) {
-                        return Activator.CreateInstance(outType);
+                    if (TryConvertTo(@object, underlingType, out var innerValue)) {
+                        outValue = innerValue;
+                        return true;
+                    } else {
+                        if (!JsonExtensions.IsAvailable) {
+                            outValue = Activator.CreateInstance(outType);
+                            return false;
+                        }
+                        
                     }
-
-                }
-
-                
-
-            } catch (Exception e) {
-
-                if (!throwOnError) {
-                    if (returnOnError != null) {
-                        return returnOnError;
-                    }
-                    return Activator.CreateInstance(outType);
-                }
                     
+                }
 
-                
+                if (JsonExtensions.IsAvailable) {
+                    try {
+                        outValue = JsonExtensions.ConvertTo(@object, outType);
+                        return true;
+                    } catch (Exception e) {
+                        outValue = null;
+                        return false;
+                    }
+
+                }
+
+
+
+            } catch {
+
+                outValue = null;
+                return false;
+
             }
 
-            throw new InvalidCastException($"Can't cast object of Type '{t}' to '{outType}'.");
+            outValue = null;
+            return false;
+
 
         }
 
-        public static bool TryCastToBoolean(this object value, params object[] trueValues) {
+      
+        public static bool TryConvertToBoolean(this object value, params object[] trueValues) {
 
             if (EqualsToAny(trueValues))
                 return true;

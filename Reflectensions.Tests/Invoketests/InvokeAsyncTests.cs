@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using doob.Reflectensions.Helpers;
-using doob.Reflectensions.Tests.Classes;
+using Reflectensions.Tests.Classes;
 using Xunit;
 
-namespace doob.Reflectensions.Tests.Invoketests
+namespace Reflectensions.Tests.Invoketests
 {
     public class InvokeAsyncTests {
 

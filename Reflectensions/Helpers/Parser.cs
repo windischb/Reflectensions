@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doob.Reflectensions.Helpers
+namespace Reflectensions.Helpers
 {
     internal static class Parser
     {

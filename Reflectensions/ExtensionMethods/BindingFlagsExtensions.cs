@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 
-namespace doob.Reflectensions.ExtensionMethods
+namespace Reflectensions.ExtensionMethods
 {
     public static class BindingFlagsExtensions
     {

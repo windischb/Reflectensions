@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace doob.Reflectensions.Exceptions {
+namespace Reflectensions.Exceptions {
 
     public class MultipleMethodsFoundException : Exception {
         public override string Message { get; }

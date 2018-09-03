@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace doob.Reflectensions.ExtensionMethods
+namespace Reflectensions.ExtensionMethods
 {
     public static class DateTimeExtensions
     {

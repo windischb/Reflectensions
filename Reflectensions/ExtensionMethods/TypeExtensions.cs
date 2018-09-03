@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using doob.Reflectensions.HelperClasses;
-using doob.Reflectensions.Helpers;
+using Reflectensions.HelperClasses;
+using Reflectensions.Helpers;
 
-namespace doob.Reflectensions {
+namespace Reflectensions.ExtensionMethods {
     public static class TypeExtensions {
 
         
@@ -58,7 +58,7 @@ namespace doob.Reflectensions {
                 return false;
 
 
-            return ImplementsInterface(type, typeof(IDictionary)) || ImplementsInterface(type, typeof(IDictionary<,>));
+            return IsGenericTypeOf(type, typeof(IDictionary)) || IsGenericTypeOf(type, typeof(IDictionary<,>)) || ImplementsInterface(type, typeof(IDictionary)) || ImplementsInterface(type, typeof(IDictionary<,>));
         }
 
         public static bool ImplementsInterface<T>(this Type type, bool throwOnError = true) {
@@ -87,7 +87,7 @@ namespace doob.Reflectensions {
             if (!inherit)
                 maximumlevel = 0;
 
-            return type.InheritFromClassLevel(from, maximumlevel, throwOnError) > -1;
+            return type.InheritFromClassLevel(from, maximumlevel, throwOnError) > 0;
 
         }
 
@@ -137,7 +137,22 @@ namespace doob.Reflectensions {
             return type.GetCustomAttribute(attributeType, inherit) != null;
         }
 
+        public static bool IsStatic(this Type type) {
+            if (type == null)
+                return false;
+            return type.IsAbstract && type.IsSealed;
+        }
+
         #endregion
+
+        public static Type GetUnderlyingType(this Type type) {
+
+            if(!type.IsNullableType(false))
+                throw new ArgumentException($"'{type}' is not a Nullable Type...");
+
+
+            return Nullable.GetUnderlyingType(type);
+        }
 
         public static IEnumerable<Type> HasAttribute<T>(this IEnumerable<Type> types, bool inherit = false) where T : Attribute {
             return types.Where(m => m.HasAttribute<T>(inherit, false));
@@ -163,6 +178,13 @@ namespace doob.Reflectensions {
         }
         public static IEnumerable<Type> InheritFromClass<T>(this IEnumerable<Type> types, bool inherit = false) {
             return types.Where(t => t.InheritFromClass<T>(inherit, false));
+        }
+
+        public static IEnumerable<Type> IsGenericTypeOf(this IEnumerable<Type> types, Type of, bool inherit = false) {
+            return types.Where(t => t.IsGenericTypeOf(of, false));
+        }
+        public static IEnumerable<Type> IsGenericTypeOf<T>(this IEnumerable<Type> types, bool inherit = false) {
+            return types.Where(t => t.IsGenericTypeOf<T>(false));
         }
 
         #region Query
@@ -249,5 +271,12 @@ namespace doob.Reflectensions {
             return objects?.Select(o => o?.GetType() ?? typeof(NullObject)).ToArray();
         }
 
+
+        public static object CreateInstance(this Type type, params object[] args) {
+            if (type == null)
+                return null;
+
+            return Activator.CreateInstance(type, args);
+        }
     }
 }

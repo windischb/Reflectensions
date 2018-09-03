@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
+using Reflectensions.Ratings;
 
-namespace doob.Reflectensions.HelperClasses
+namespace Reflectensions.HelperClasses
 {
     public class RatedMethodInfo
     {

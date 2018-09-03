@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
+using Reflectensions.ExtensionMethods;
 
-namespace doob.Reflectensions.Helpers
-{
-    public static class TypeHelper
-    {
+namespace Reflectensions.Helpers {
+    public static class TypeHelper {
         #region Constants
 
         public static Dictionary<Type, List<Type>> ImplicitNumericConversionsTable = new Dictionary<Type, List<Type>> {
@@ -98,6 +96,8 @@ namespace doob.Reflectensions.Helpers
 
 
         }
+
+
 
     }
 }

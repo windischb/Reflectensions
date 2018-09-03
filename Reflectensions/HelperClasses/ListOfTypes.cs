@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace doob.Reflectensions.HelperClasses
+namespace Reflectensions.HelperClasses
 {
     internal class ListOfTypes<T1> : List<Type>
     {

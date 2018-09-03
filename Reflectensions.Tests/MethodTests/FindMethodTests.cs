@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Reflection;
-using doob.Reflectensions.Exceptions;
-using doob.Reflectensions.Tests.Classes;
+using Reflectensions.Exceptions;
+using Reflectensions.ExtensionMethods;
+using Reflectensions.Tests.Classes;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace doob.Reflectensions.Tests.MethodTests
+namespace Reflectensions.Tests.MethodTests
 {
     public class FindMethodTests
     {

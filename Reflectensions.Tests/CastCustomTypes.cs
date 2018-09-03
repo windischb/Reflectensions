@@ -1,8 +1,9 @@
 ﻿using System;
-using doob.Reflectensions.Tests.Classes;
+using Reflectensions.ExtensionMethods;
+using Reflectensions.Tests.Classes;
 using Xunit;
 
-namespace doob.Reflectensions.Tests
+namespace Reflectensions.Tests
 {
     public class CastCustomTypes
     {
@@ -29,13 +30,13 @@ namespace doob.Reflectensions.Tests
 
             var str = "2018-03-21T15:50:17+00:00";
 
-            DateTime? nullDate = str.CastTo<DateTime?>();
-            DateTime date = str.CastTo<DateTime>();
+            DateTime? nullDate = str.ConvertTo<DateTime?>();
+            DateTime date = str.ConvertTo<DateTime>();
 
             var str2 = "";
 
-            DateTime? nullDate2 = str2.CastTo<DateTime?>();
-            DateTime date2 = str2.CastTo<DateTime>(false, DateTime.Now);
+            DateTime? nullDate2 = str2.ConvertTo<DateTime?>(false);
+            DateTime date2 = str2.ConvertTo<DateTime>(false, DateTime.Now);
 
         }
     }

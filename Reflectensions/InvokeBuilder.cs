@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Reflectensions.ExtensionMethods;
 
-namespace doob.Reflectensions
+namespace Reflectensions
 {
     public class InvokeBuilder
     {
@@ -32,27 +32,27 @@ namespace doob.Reflectensions
             return this;
         }
 
-        public InvokeBuilder WithGenericArguments(params Type[] arguments) {
+        internal InvokeBuilder WithGenericArguments(params Type[] arguments) {
             Context.SetGenericArguments(arguments);
             return this;
         }
 
-        public InvokeBuilder WithGenericArguments<T>() {
+        internal InvokeBuilder WithGenericArguments<T>() {
             Context.SetGenericArguments(typeof(T));
             return this;
         }
 
-        public InvokeBuilder WithGenericArguments<T1, T2>() {
+        internal InvokeBuilder WithGenericArguments<T1, T2>() {
             Context.SetGenericArguments(typeof(T1), typeof(T2));
             return this;
         }
 
-        public InvokeBuilder WithGenericArguments<T1, T2, T3>() {
+        internal InvokeBuilder WithGenericArguments<T1, T2, T3>() {
             Context.SetGenericArguments(typeof(T1), typeof(T2), typeof(T3));
             return this;
         }
 
-        public InvokeBuilder WithGenericArguments<T1, T2, T3, T4>() {
+        internal InvokeBuilder WithGenericArguments<T1, T2, T3, T4>() {
             Context.SetGenericArguments(typeof(T1), typeof(T2), typeof(T3), typeof(T4));
             return this;
         }

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using doob.Reflectensions.Exceptions;
-using doob.Reflectensions.ExtensionMethods;
-using doob.Reflectensions.HelperClasses;
-using doob.Reflectensions.Helpers;
+using Reflectensions.HelperClasses;
 
-namespace doob.Reflectensions {
+namespace Reflectensions.ExtensionMethods {
     public static class MethodInfoExtensions {
 
         public static bool HasName(this MethodInfo methodInfo, string name, bool throwOnError = true) {
@@ -25,7 +22,7 @@ namespace doob.Reflectensions {
 
             var searchValue = name.Contains(".") ? $"{methodInfo.ReflectedType}.{methodInfo.Name}" : methodInfo.Name;
 
-            return StringExtensions.DifferencesCount(searchValue, name);
+            return Reflectensions.StringExtensions.DifferencesCount(searchValue, name);
         }
 
         public static bool HasParametersLengthOf(this MethodInfo methodInfo, int paramterLength, bool includeOptional = false, bool throwOnError = true) {

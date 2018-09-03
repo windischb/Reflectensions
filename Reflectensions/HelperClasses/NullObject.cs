@@ -1,4 +1,4 @@
-﻿namespace doob.Reflectensions.HelperClasses {
+﻿namespace Reflectensions.HelperClasses {
 
     internal class NullObject { }
 

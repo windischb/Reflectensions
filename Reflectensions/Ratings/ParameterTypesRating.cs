@@ -1,4 +1,4 @@
-﻿namespace doob.Reflectensions
+﻿namespace Reflectensions.Ratings
 {
     public class ParameterTypesRating : BaseRating<ParameterTypesRating> {
 

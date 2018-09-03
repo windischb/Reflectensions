@@ -4,8 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-
-namespace doob.Reflectensions.ExtensionMethods
+namespace Reflectensions.ExtensionMethods
 {
     public static class StringExtensions
     {
@@ -17,9 +16,12 @@ namespace doob.Reflectensions.ExtensionMethods
             return val;
         }
 
-        public static string Trim(this string value, string trim)
-        {
-            return value.Trim(trim.ToCharArray());
+        public static string Trim(this string value, params string[] trimCharacters) {
+            return value.Trim(String.Join("", trimCharacters).ToCharArray());
+        }
+
+        public static string TrimToNull(this string input, params string[] trimCharacters) {
+            return input.ToNull()?.Trim(String.Join("", trimCharacters).ToCharArray()).ToNull();
         }
 
         public static string[] Split(this string value, string split, bool removeEmptyEntries = false)
@@ -112,11 +114,7 @@ namespace doob.Reflectensions.ExtensionMethods
             return System.Net.IPAddress.TryParse(str, out ipAddress);
         }
 
-        public static Boolean IsValidGuid(this string value)
-        {
-            return Guid.TryParse(value, out _);
-        }
-
+       
         public static bool IsBase64Encoded(this string str)
         {
             if (string.IsNullOrEmpty(str))
@@ -182,6 +180,14 @@ namespace doob.Reflectensions.ExtensionMethods
                 return false;
             }
         }
+
+
+        public static bool IsGuid(this string value) {
+            value = value.Trim("\"");
+
+            return Guid.TryParse(value, out _);
+        }
+
         #endregion
 
         #region StringTo
@@ -277,6 +283,9 @@ namespace doob.Reflectensions.ExtensionMethods
         public static DateTime? ToNullableDateTime(this string str, string customFormat = null)
         {
 
+            if (String.IsNullOrWhiteSpace(str?.Trim('"')))
+                return null;
+
             DateTime dateTime = default(DateTime);
 
             List<string> formats = new List<string>();
@@ -325,16 +334,19 @@ namespace doob.Reflectensions.ExtensionMethods
                 return dateTime;
             }
 
-            //try {
-            //    string vstr = str;
-            //    if (!vstr.StartsWith("\"") && !vstr.EndsWith("\""))
-            //        vstr = $"\"{str}\"";
+            if (JsonExtensions.IsAvailable) {
+                try {
+                    string vstr = str;
+                    if (!vstr.StartsWith("\"") && !vstr.EndsWith("\""))
+                        vstr = $"\"{str}\"";
 
-            //    dateTime = JsonConvert.DeserializeObject<DateTime>(vstr);
-            //    return dateTime;
-            //} catch {
-            //    // ignored
-            //}
+                    dateTime = JsonExtensions.ConvertTo<DateTime>(vstr);
+                    return dateTime;
+                } catch {
+                    // ignored
+                }
+            }
+            
 
             return null;
         }
@@ -366,12 +378,16 @@ namespace doob.Reflectensions.ExtensionMethods
 
         public static Guid ToGuid(this string value)
         {
-            if (Guid.TryParse(value, out var g))
-            {
+            value = value.Trim("\"");
+
+            if (Guid.TryParse(value, out var g)) {
                 return g;
-            };
-            return new Guid();
+            }
+
+            throw new InvalidCastException($"Can't cast '{value}' to GUID");
         }
+
+        
 
         #endregion
     }
