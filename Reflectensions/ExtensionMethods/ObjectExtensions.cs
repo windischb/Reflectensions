@@ -20,7 +20,7 @@ namespace Reflectensions.ExtensionMethods {
                 if (returnOnError != null) {
                     return returnOnError;
                 }
-                return Activator.CreateInstance(outType);
+                return outType.IsValueType ? Activator.CreateInstance(outType) : null;
             }
             throw new InvalidCastException($"Can't cast object of Type '{@object.GetType()}' to '{outType}'.");
 

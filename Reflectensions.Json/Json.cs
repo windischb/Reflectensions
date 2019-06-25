@@ -132,7 +132,7 @@ namespace Reflectensions {
             var jToken = ToJToken(@object);
             return ToJObject(jToken);
         }
-        public JToken ToJObject(string json) {
+        public JObject ToJObject(string json) {
 
             var jToken = ToJToken(json);
             return ToJObject(jToken);
@@ -202,12 +202,12 @@ namespace Reflectensions {
             return ToDictionary<TKey, TValue>(jToken);
         }
 
-        public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(JObject jObject) {
-            if (jObject == null)
-                return null;
+        //public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(JObject jObject) {
+        //    if (jObject == null)
+        //        return null;
 
-            return ToDictionary<TKey, TValue>(jObject);
-        }
+        //    return ToDictionary<TKey, TValue>(jObject);
+        //}
 
         private Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(JToken jToken) {
 
@@ -223,8 +223,8 @@ namespace Reflectensions {
             if (data == null)
                 return null;
 
-            var jToken = ToJToken(data);
-            return ToDictionary(jToken);
+            var jObject = ToJObject(data);
+            return ToDictionary(jObject);
 
         }
 
@@ -232,8 +232,8 @@ namespace Reflectensions {
             if (json == null)
                 return null;
 
-            var jToken = ToJToken(json);
-            return ToDictionary(jToken);
+            var jObject = ToJObject(json);
+            return ToDictionary(jObject);
         }
 
         public Dictionary<string, object> ToDictionary(JObject jObject) {

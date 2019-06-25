@@ -51,7 +51,7 @@ namespace Reflectensions {
 
                 if (enumerable.Length > i) {
 
-                    return enumerable[i] == null ? null : enumerable[i].ConvertTo(p.ParameterType);
+                    return enumerable[i].ConvertTo(p.ParameterType, false);
                 }
 
                 return p.DefaultValue;
@@ -148,13 +148,13 @@ namespace Reflectensions {
             if (isTaskReturn) {
                 
                 var task = ((Task)methodInfo.Invoke(instance, enumerable));
-                returnObject = AsyncHelper.RunSync(() => task.ConvertToTaskOf<T>());
+                returnObject = AsyncHelper.RunSync(() => task.ConvertToTaskOf<T>(false));
                 //task.GetAwaiter().GetResult();
 
                 //var resultProperty = typeof(Task<>).MakeGenericType(methodInfo.ReturnType.GetGenericArguments().FirstOrDefault()).GetProperty("Result");
                 //returnObject = resultProperty?.GetValue(task);
             } else {
-                returnObject = methodInfo.Invoke(instance, enumerable).ConvertTo<T>();
+                returnObject = methodInfo.Invoke(instance, enumerable).ConvertTo<T>(false);
             }
 
             return returnObject; // != null ? returnObject.ConvertTo<T>() : default(T);
@@ -188,8 +188,13 @@ namespace Reflectensions {
             }
 
             var enumerable = BuildParametersArray(methodInfo, parameters);
+            var isTaskVoid = methodInfo.ReturnType == typeof(Task);
+            if (isTaskVoid) {
+                await (Task)methodInfo.Invoke(instance, enumerable);
+                return default;
+            }
 
-            var isTaskReturn = methodInfo.ReturnType.IsGenericType && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>);
+                var isTaskReturn = methodInfo.ReturnType.IsGenericType && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>);
 
             var returnType = methodInfo.ReturnType;
             if (isTaskReturn) {
@@ -199,7 +204,7 @@ namespace Reflectensions {
             if (returnType.NotEquals<T>() && !returnType.InheritFromClass<T>() && !returnType.ImplementsInterface<T>(false) && !returnType.IsImplicitCastableTo<T>())
                 throw new Exception($"Method returns a Type of '{methodInfo.ReturnType}' which is not implicitly castable to {typeof(T)}");
 
-            object returnObject;
+            object returnObject = null;
 
             if (isTaskReturn) {
 
@@ -211,7 +216,7 @@ namespace Reflectensions {
                 returnObject = await Task.Run(() => methodInfo.Invoke(instance, enumerable));
             }
 
-            return returnObject.ConvertTo<T>();
+            return returnObject.ConvertTo<T>(false);
 
         }
 

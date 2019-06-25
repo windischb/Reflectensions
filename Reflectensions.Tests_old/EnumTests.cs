@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Newtonsoft.Json.Converters;
 using Reflectensions.ExtensionMethods;
 using Xunit;
 using Xunit.Abstractions;

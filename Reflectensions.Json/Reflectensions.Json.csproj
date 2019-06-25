@@ -7,15 +7,15 @@
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
     <AssemblyName>ReflectensionsJson</AssemblyName>
-    <Version>1.0.1</Version>
+    <Version>2.2.3</Version>
     <Product>Reflectensions.Json</Product>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1">
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reflectensions" Version="2.0.1" />
+    <PackageReference Include="Reflectensions" Version="2.2.3" />
   </ItemGroup>
 
 </Project>
