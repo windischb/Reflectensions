@@ -72,7 +72,7 @@ namespace Reflectensions.ExtensionMethods {
             return ie.ToList();
         }
 
-        public static async Task<TResult> ConvertToTaskOf<TResult>(this Task task) {
+        public static async Task<TResult> ConvertToTaskOf<TResult>(this Task task, bool throwOnError = true, TResult returnOnError = default(TResult)) {
 
             if (task == null)
                 return default;
@@ -83,7 +83,7 @@ namespace Reflectensions.ExtensionMethods {
             if (obj == null)
                 return default;
 
-            return await Task.FromResult(obj.ConvertTo<TResult>());
+            return await Task.FromResult(obj.ConvertTo<TResult>(throwOnError, returnOnError));
         }
 
     }

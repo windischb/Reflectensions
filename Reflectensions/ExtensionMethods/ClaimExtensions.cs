@@ -22,6 +22,10 @@ namespace Reflectensions.ExtensionMethods
             return claims.GetFirstClaimByType(type)?.Value;
         }
 
+        public static IEnumerable<string> GetClaimValuesByType(this IEnumerable<Claim> claims, string type) {
+            return claims.GetClaimsByType(type)?.Select(c => c.Value);
+        }
+
         public static List<Claim> RemoveClaimsByType(this List<Claim> claims, string type)
         {
             claims.RemoveAll(c => c.Type.Equals(type, StringComparison.CurrentCultureIgnoreCase));

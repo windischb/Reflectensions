@@ -81,7 +81,7 @@ namespace Reflectensions.ExtensionMethods
 
 
             result = Enum.Parse(enumType, String.Join(",", enums), ignoreCase);
-            return false;
+            return result != null;
         }
 
     }
