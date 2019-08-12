@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>Reflectensions</RootNamespace>
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/windischb/Reflectensions</RepositoryUrl>
     <PackageId>Reflectensions</PackageId>
     <Version>2.2.3</Version>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +20,11 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0">
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reflectensions.Common\Reflectensions.Common.csproj" />
+    <ProjectReference Include="..\Reflectensions.Helpers\Reflectensions.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

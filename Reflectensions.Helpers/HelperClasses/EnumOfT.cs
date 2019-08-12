@@ -1,8 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Reflection;
-using System.Runtime.Serialization;
-using Reflectensions.ExtensionMethods;
+using Reflectensions.Helpers;
 
 namespace Reflectensions.HelperClasses {
 
@@ -31,7 +28,7 @@ namespace Reflectensions.HelperClasses {
 
         public static bool TryFind(string value, out T result) {
 
-            var found = EnumExtensions.TryFind(typeof(T), value, out var _result);
+            var found = EnumHelpers.TryFind(typeof(T), value, out var _result);
             if (found) {
                 result = (T) _result;
             } else {
@@ -42,7 +39,7 @@ namespace Reflectensions.HelperClasses {
         }
 
         public static bool TryFind(string value, bool ignoreCase, out T result) {
-            var found = EnumExtensions.TryFind(typeof(T), value, ignoreCase, out var _result);
+            var found = EnumHelpers.TryFind(typeof(T), value, ignoreCase, out var _result);
             if (found) {
                 result = (T)_result;
             } else {

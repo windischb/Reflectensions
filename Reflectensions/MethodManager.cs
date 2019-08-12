@@ -109,7 +109,7 @@ namespace Reflectensions {
             if (methodInfo.IsStatic) {
                 instance = null;
             } else if (instance == null || instance is Type) {
-                instance = methodInfo.ReflectedType.CreateInstance();
+                instance = TypeHelpers.CreateInstance(methodInfo?.ReflectedType);
             }
 
             var enumerable = BuildParametersArray(methodInfo, parameters);
@@ -128,7 +128,7 @@ namespace Reflectensions {
             if (methodInfo.IsStatic) {
                 instance = null;
             } else if (instance == null || instance is Type) {
-                instance = methodInfo.ReflectedType.CreateInstance();
+                instance = TypeHelpers.CreateInstance(methodInfo?.ReflectedType);
             }
 
 
@@ -140,7 +140,7 @@ namespace Reflectensions {
                 returnType = methodInfo.ReturnType.GenericTypeArguments[0];
             }
 
-            if (returnType.NotEquals<T>() && !returnType.InheritFromClass<T>() && !returnType.ImplementsInterface<T>(false) && !returnType.IsImplicitCastableTo<T>())
+            if (TypeHelpers.NotEquals<T>(returnType) && !TypeHelpers.InheritFromClass<T>(returnType) && !TypeHelpers.ImplementsInterface<T>(returnType, false) && !TypeHelpers.IsImplicitCastableTo<T>(returnType))
                 throw new Exception($"Method returns a Type of '{methodInfo.ReturnType}' which is not implicitly castable to {typeof(T)}");
 
             T returnObject;
@@ -164,7 +164,7 @@ namespace Reflectensions {
             if (methodInfo.IsStatic) {
                 instance = null;
             } else if (instance == null || instance is Type) {
-                instance = methodInfo.ReflectedType.CreateInstance();
+                instance = TypeHelpers.CreateInstance(methodInfo?.ReflectedType);
             }
 
             var enumerable = BuildParametersArray(methodInfo, parameters);
@@ -184,7 +184,7 @@ namespace Reflectensions {
             if (methodInfo.IsStatic) {
                 instance = null;
             } else if (instance == null || instance is Type) {
-                instance = methodInfo.ReflectedType.CreateInstance();
+                instance = TypeHelpers.CreateInstance(methodInfo?.ReflectedType);
             }
 
             var enumerable = BuildParametersArray(methodInfo, parameters);
@@ -201,7 +201,7 @@ namespace Reflectensions {
                 returnType = methodInfo.ReturnType.GenericTypeArguments[0];
             }
 
-            if (returnType.NotEquals<T>() && !returnType.InheritFromClass<T>() && !returnType.ImplementsInterface<T>(false) && !returnType.IsImplicitCastableTo<T>())
+            if (TypeHelpers.NotEquals<T>(returnType) && !TypeHelpers.InheritFromClass<T>(returnType) && !TypeHelpers.ImplementsInterface<T>(returnType, false) && !TypeHelpers.IsImplicitCastableTo<T>(returnType))
                 throw new Exception($"Method returns a Type of '{methodInfo.ReturnType}' which is not implicitly castable to {typeof(T)}");
 
             object returnObject = null;

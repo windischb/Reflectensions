@@ -12,14 +12,14 @@ namespace Reflectensions {
         private int _diff;
         private bool _failed;
 
-        internal StringDifferences SetFailed()
+        public StringDifferences SetFailed()
         {
             _failed = true;
             return this;
         }
 
 
-        internal StringDifferences AddMatch(int index, int length, string value) {
+        public StringDifferences AddMatch(int index, int length, string value) {
             _matches.Add((index, length, value));
             _diff += length != 0 ? length : 1;
             return this;

@@ -4,14 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Reflectensions.HelperClasses;
 
-namespace Reflectensions.ExtensionMethods
+namespace Reflectensions.Helpers
 {
-    public static class EnumExtensions
+    public static class EnumHelpers
     {
 
-        public static string GetName(this Enum enumValue) {
+        public static string GetName(Enum enumValue) {
 
 
             var enumType = enumValue.GetType();
@@ -42,7 +41,7 @@ namespace Reflectensions.ExtensionMethods
         public static bool TryFind(Type enumType, string value, bool ignoreCase, out object result) {
             var fields = enumType.GetFields();
 
-            var enumValues = value?.Split(",", true).Select(v => v.Trim()).Where(v => !String.IsNullOrWhiteSpace(v)).ToList();
+            var enumValues = StringHelpers.Split(value, ",", true).Select(v => v.Trim()).Where(v => !String.IsNullOrWhiteSpace(v)).ToList();
 
             if (enumValues == null || !enumValues.Any()) {
                 result = null;

@@ -2,7 +2,7 @@
 
 namespace Reflectensions {
 
-    internal static class Throw {
+    public static class Throw {
 
         public static void IfEmpty(string value, string name) {
             if (String.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(name);
