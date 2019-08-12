@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Reflectensions.ExtensionMethods;
+using Reflectensions.Helpers;
 
 namespace Reflectensions
 {
@@ -28,7 +29,7 @@ namespace Reflectensions
         public InvokeBuilder WithParameters(params object[] parameters) {
 
             Context.Parameters = parameters?.ToList();
-            Context.SetParameterTypes(parameters.ToParameterTypes());
+            Context.SetParameterTypes(TypeHelpers.ToParameterTypes(parameters));
             return this;
         }
 

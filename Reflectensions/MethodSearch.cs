@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Reflectensions.ExtensionMethods;
 using Reflectensions.HelperClasses;
+using Reflectensions.Helpers;
 
 namespace Reflectensions
 {
@@ -115,7 +116,7 @@ namespace Reflectensions
         public MethodSearch SetParameterTypes(params object[] parameters) {
             
             Context.SearchFor = Context.SearchFor | MethodSearchFlags.ParameterTypes;
-            Context.ParameterTypes = parameters.ToParameterTypes()?.Select(SignatureType.FromType).ToList() ?? new List<SignatureType>();
+            Context.ParameterTypes = TypeHelpers.ToParameterTypes(parameters)?.Select(SignatureType.FromType).ToList() ?? new List<SignatureType>();
             return this;
         }
         public MethodSearch SetParameterTypes(params Type[] parameterTypes) {

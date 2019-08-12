@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Reflectensions.HelperClasses;
-using Reflectensions.Helpers;
 
-namespace Reflectensions.ExtensionMethods {
-    public static class MethodInfoExtensions {
+namespace Reflectensions.Helpers {
+    public static class MethodInfoHelpers {
 
-        public static bool HasName(this MethodInfo methodInfo, string name, bool throwOnError = true) {
+        public static bool HasName(MethodInfo methodInfo, string name, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfo, nameof(methodInfo), throwOnError))
                 return false;
 
             return methodInfo.Name == name;
         }
 
-        public static int MatchesName(this MethodInfo methodInfo, string name, bool throwOnError = true) {
+        public static int MatchesName(MethodInfo methodInfo, string name, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfo, nameof(methodInfo), throwOnError))
                 return -1;
 
@@ -23,10 +22,10 @@ namespace Reflectensions.ExtensionMethods {
 
             var searchValue = name.Contains(".") ? $"{methodInfo.ReflectedType}.{methodInfo.Name}" : methodInfo.Name;
 
-            return Reflectensions.StringExtensions.DifferencesCount(searchValue, name);
+            return StringHelpers.DifferencesCount(searchValue, name);
         }
 
-        public static bool HasParametersLengthOf(this MethodInfo methodInfo, int paramterLength, bool includeOptional = false, bool throwOnError = true) {
+        public static bool HasParametersLengthOf(MethodInfo methodInfo, int paramterLength, bool includeOptional = false, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfo, nameof(methodInfo), throwOnError))
                 return false;
 
@@ -43,7 +42,7 @@ namespace Reflectensions.ExtensionMethods {
             return includeOptional && methodInfoParameters.Skip(paramterLength).All(p => p.IsOptional);
         }
 
-        public static bool HasParametersOfType(this MethodInfo methodInfo, Type[] types, bool throwOnError = true) {
+        public static bool HasParametersOfType(MethodInfo methodInfo, Type[] types, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfo, nameof(methodInfo), throwOnError))
                 return false;
 
@@ -63,14 +62,14 @@ namespace Reflectensions.ExtensionMethods {
             return match;
         }
 
-        public static bool HasAttribute<T>(this MethodInfo methodInfo, bool inherit = false, bool throwOnError = true) where T : Attribute {
+        public static bool HasAttribute<T>(MethodInfo methodInfo, bool inherit = false, bool throwOnError = true) where T : Attribute {
             if (Throw.IfIsNull(methodInfo, nameof(methodInfo), throwOnError))
                 return false;
 
             return HasAttribute(methodInfo, typeof(T));
         }
 
-        public static bool HasAttribute(this MethodInfo methodInfo, Type attributeType, bool inherit = false, bool throwOnError = true) {
+        public static bool HasAttribute(MethodInfo methodInfo, Type attributeType, bool inherit = false, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfo, nameof(methodInfo), throwOnError))
                 return false;
 
@@ -81,18 +80,18 @@ namespace Reflectensions.ExtensionMethods {
             return methodInfo.GetCustomAttribute(attributeType, inherit) != null;
         }
 
-        public static bool HasReturnType<T>(this MethodInfo methodInfo, bool throwOnError = true) {
+        public static bool HasReturnType<T>(MethodInfo methodInfo, bool throwOnError = true) {
             Throw.IfIsNull(methodInfo, nameof(methodInfo));
-            return TypeHelpers.Equals<T>(methodInfo?.ReturnType);
+            return TypeHelpers.Equals<T>(methodInfo.ReturnType);
         }
-        public static bool HasReturnType(this MethodInfo methodInfo, Type returnType, bool throwOnError = true) {
+        public static bool HasReturnType(MethodInfo methodInfo, Type returnType, bool throwOnError = true) {
             Throw.IfIsNull(methodInfo, nameof(methodInfo));
             Throw.IfIsNull(returnType, nameof(returnType));
 
             return methodInfo.ReturnType == returnType;
         }
 
-        public static MethodAccessModifier GetAccessModifier(this MethodInfo methodInfo) {
+        public static MethodAccessModifier GetAccessModifier(MethodInfo methodInfo) {
             var checkTypeValues = new List<MethodAttributes>() {
                 MethodAttributes.Public,
                 MethodAttributes.FamORAssem,
@@ -134,27 +133,27 @@ namespace Reflectensions.ExtensionMethods {
             return MethodAccessModifier.Unknown;
         }
 
-        public static IEnumerable<RatedMethodInfo> FindMatchingMethodInfo(this IEnumerable<MethodInfo> methodInfos, MethodSearch search, bool throwOnError = true) {
+        //public static IEnumerable<RatedMethodInfo> FindMatchingMethodInfo(this IEnumerable<MethodInfo> methodInfos, MethodSearch search, bool throwOnError = true) {
 
-            var possibleMethods = methodInfos
-                .Select(m => new RatedMethodInfo(m, search))
-                .Where(result => !result.Rating.Failed);
+        //    var possibleMethods = methodInfos
+        //        .Select(m => new RatedMethodInfo(m, search))
+        //        .Where(result => !result.Rating.Failed);
 
-            return possibleMethods;
+        //    return possibleMethods;
 
-        }
+        //}
 
-        public static MethodInfo FindBestMatchingMethodInfo(this IEnumerable<MethodInfo> methodInfos, MethodSearch search, bool throwOnError = true) {
+        //public static MethodInfo FindBestMatchingMethodInfo(this IEnumerable<MethodInfo> methodInfos, MethodSearch search, bool throwOnError = true) {
 
-            return methodInfos.FindMatchingMethodInfo(search, throwOnError).FindBestMatchingMethodInfo(search, throwOnError);
-        }
+        //    return methodInfos.FindMatchingMethodInfo(search, throwOnError).FindBestMatchingMethodInfo(search, throwOnError);
+        //}
 
 
-        public static IEnumerable<MethodInfo> HasName(this IEnumerable<MethodInfo> methodInfos, string name) {
-            Throw.IfIsNull(methodInfos, nameof(methodInfos));
+        //public static IEnumerable<MethodInfo> HasName(this IEnumerable<MethodInfo> methodInfos, string name) {
+        //    Throw.IfIsNull(methodInfos, nameof(methodInfos));
 
-            return methodInfos.Where(m => m.HasName(name));
-        }
+        //    return methodInfos.Where(m => m.HasName(name));
+        //}
 
         public static IEnumerable<MethodInfo> HasReturnType<T>(this IEnumerable<MethodInfo> methodInfos, Type returnType, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfos, nameof(methodInfos), throwOnError))
@@ -163,7 +162,7 @@ namespace Reflectensions.ExtensionMethods {
             if (returnType == null)
                 returnType = typeof(void);
 
-            return methodInfos.Where(m => m.HasReturnType<T>());
+            return methodInfos.Where(m => HasReturnType<T>(m));
         }
         public static IEnumerable<MethodInfo> HasReturnType(this IEnumerable<MethodInfo> methodInfos, Type returnType, bool throwOnError = true) {
             if (Throw.IfIsNull(methodInfos, nameof(methodInfos), throwOnError))
@@ -172,18 +171,18 @@ namespace Reflectensions.ExtensionMethods {
             if (returnType == null)
                 returnType = typeof(void);
 
-            return methodInfos.Where(m => m.HasReturnType(returnType));
+            return methodInfos.Where(m => HasReturnType(m, returnType));
         }
 
         public static IEnumerable<MethodInfo> HasParametersOfType(this IEnumerable<MethodInfo> methodInfos, params Type[] types) {
-            return methodInfos.Where(m => m.HasParametersOfType(types));
+            return methodInfos.Where(m => HasParametersOfType(m, types));
         }
 
         public static IEnumerable<MethodInfo> HasAttribute<T>(this IEnumerable<MethodInfo> methodInfos, bool inherit = false) where T : Attribute {
-            return methodInfos.Where(m => m.HasAttribute<T>(inherit));
+            return methodInfos.Where(m => HasAttribute<T>(m, inherit));
         }
         public static IEnumerable<MethodInfo> HasAttribute(this IEnumerable<MethodInfo> methodInfos, Type attributeType, bool inherit = false) {
-            return methodInfos.Where(m => m.HasAttribute(attributeType, inherit));
+            return methodInfos.Where(m => HasAttribute(m, attributeType, inherit));
         }
 
         public static IEnumerable<(MethodInfo MethodInfo, T Attribute)> WithAttribute<T>(this IEnumerable<MethodInfo> methodInfos, bool inherit = false) where T : Attribute {

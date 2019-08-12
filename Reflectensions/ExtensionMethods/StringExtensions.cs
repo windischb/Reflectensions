@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Reflectensions.Helpers;
 
 namespace Reflectensions.ExtensionMethods
 {
@@ -334,13 +335,13 @@ namespace Reflectensions.ExtensionMethods
                 return dateTime;
             }
 
-            if (JsonExtensions.IsAvailable) {
+            if (JsonHelpers.IsAvailable) {
                 try {
                     string vstr = str;
                     if (!vstr.StartsWith("\"") && !vstr.EndsWith("\""))
                         vstr = $"\"{str}\"";
 
-                    dateTime = JsonExtensions.ConvertTo<DateTime>(vstr);
+                    dateTime = JsonHelpers.ConvertTo<DateTime>(vstr);
                     return dateTime;
                 } catch {
                     // ignored

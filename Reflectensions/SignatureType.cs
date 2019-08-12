@@ -13,11 +13,11 @@ namespace Reflectensions {
         public Type FoundMatchingType { get; private set; }
         public string GenericName { get; private set; }
 
-        public bool IsStatic => FoundMatchingType.IsStatic();
+        public bool IsStatic => TypeHelpers.IsStatic(FoundMatchingType);
 
         private SignatureType(string name) {
 
-            FoundMatchingType = TypeHelper.FindType(name);
+            FoundMatchingType = TypeHelpers.FindType(name);
 
             if (FoundMatchingType == null) {
                 if (!name.Contains(".")) {

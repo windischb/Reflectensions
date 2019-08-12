@@ -1,14 +1,15 @@
 ﻿using System;
+using Reflectensions.Helpers;
 
 namespace Reflectensions.ExtensionMethods {
-    public static class ObjectExtensions {
+    public static class ObjectHelpers {
 
-        public static T ConvertTo<T>(this object @object, bool throwOnError = true, T returnOnError = default(T)) {
+        public static T ConvertTo<T>(object @object, bool throwOnError = true, T returnOnError = default(T)) {
             return (T)ConvertTo(@object, typeof(T), throwOnError, returnOnError);
             
         }
 
-        public static object ConvertTo(this object @object, Type outType, bool throwOnError = true, object returnOnError = null) {
+        public static object ConvertTo(object @object, Type outType, bool throwOnError = true, object returnOnError = null) {
 
            
             var result = TryConvertTo(@object, outType, out var outValue);
@@ -26,7 +27,7 @@ namespace Reflectensions.ExtensionMethods {
 
         }
 
-        public static bool TryConvertTo<T>(this object @object, out T outValue) {
+        public static bool TryConvertTo<T>(object @object, out T outValue) {
 
 
             var result = TryConvertTo(@object, typeof(T), out var _outValue);
@@ -35,7 +36,7 @@ namespace Reflectensions.ExtensionMethods {
             return result;
         }
 
-        public static bool TryConvertTo(this object @object, Type outType, out object outValue) {
+        public static bool TryConvertTo(object @object, Type outType, out object outValue) {
 
 
             if (@object == null) {
@@ -51,7 +52,7 @@ namespace Reflectensions.ExtensionMethods {
                 return true;
             }
 
-            if (t.ImplementsInterface(outType, false) || t.InheritFromClass(outType, true)) {
+            if (TypeHelpers.ImplementsInterface(t, outType, false) || TypeHelpers.InheritFromClass(t, outType, true)) {
                 outValue = @object;
                 return true;
             }
@@ -61,12 +62,12 @@ namespace Reflectensions.ExtensionMethods {
 
 
 
-                if (@object.GetType().ImplementsInterface<IConvertible>() && outType.ImplementsInterface<IConvertible>()) {
+                if (TypeHelpers.ImplementsInterface<IConvertible>(@object?.GetType()) && TypeHelpers.ImplementsInterface<IConvertible>(outType)) {
                     outValue = Convert.ChangeType(@object, outType);
                     return true;
                 }
 
-                var method = t.GetImplicitCastMethodTo(outType);
+                var method = TypeHelpers.GetImplicitCastMethodTo(t, outType);
 
                 if (method != null) {
                     outValue = method.Invoke(null, new object[] {
@@ -77,13 +78,13 @@ namespace Reflectensions.ExtensionMethods {
 
 
 
-                if (outType.IsNullableType()) {
+                if (TypeHelpers.IsNullableType(outType)) {
                     var underlingType = Nullable.GetUnderlyingType(outType);
                     if (TryConvertTo(@object, underlingType, out var innerValue)) {
                         outValue = innerValue;
                         return true;
                     } else {
-                        if (!JsonExtensions.IsAvailable) {
+                        if (!JsonHelpers.IsAvailable) {
                             outValue = Activator.CreateInstance(outType);
                             return false;
                         }
@@ -92,11 +93,11 @@ namespace Reflectensions.ExtensionMethods {
                     
                 }
 
-                if (JsonExtensions.IsAvailable) {
+                if (JsonHelpers.IsAvailable) {
                     try {
-                        outValue = JsonExtensions.ConvertTo(@object, outType);
+                        outValue = JsonHelpers.ConvertTo(@object, outType);
                         return true;
-                    } catch (Exception e) {
+                    } catch {
                         outValue = null;
                         return false;
                     }
@@ -119,7 +120,7 @@ namespace Reflectensions.ExtensionMethods {
         }
 
       
-        public static bool TryConvertToBoolean(this object value, params object[] trueValues) {
+        public static bool TryConvertToBoolean(object value, params object[] trueValues) {
 
             if (EqualsToAny(trueValues))
                 return true;
@@ -150,7 +151,7 @@ namespace Reflectensions.ExtensionMethods {
         }
 
 
-        public static bool EqualsToAny(this object value, params object[] equalsto) {
+        public static bool EqualsToAny(object value, params object[] equalsto) {
 
             foreach (var trueValue in equalsto) {
                 if (value == trueValue) {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Reflectensions.ExtensionMethods {
-    public static class ReflectionExtensions {
+namespace Reflectensions.Helpers {
+    public static class ReflectionHelpers {
 
-        public static T GetPropertyValue<T>(this object @object, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {
+        public static T GetPropertyValue<T>(object @object, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {
             var type = @object.GetType();
 
             var property = GetProperty(type, fieldName, bindingFlags);
@@ -14,7 +14,7 @@ namespace Reflectensions.ExtensionMethods {
             return (T)value;
         }
 
-        public static T GetPropertyValue<T>(this Type type, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {
+        public static T GetPropertyValue<T>(Type type, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {
             var property = type.GetProperty(fieldName, bindingFlags);
             var value = property.GetValue(type);
             return (T)value;
@@ -32,5 +32,6 @@ namespace Reflectensions.ExtensionMethods {
             return null;
 
         }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Reflectensions.ExtensionMethods;
 using Reflectensions.HelperClasses;
+using Reflectensions.Helpers;
 using Reflectensions.Ratings;
 
 namespace Reflectensions
@@ -99,18 +100,18 @@ namespace Reflectensions
                         continue;
                     }
 
-                    if (thisType.FoundMatchingType.IsInterface && TypeExtensions.ImplementsInterface(otherType.FoundMatchingType, thisType.FoundMatchingType)) {
+                    if (thisType.FoundMatchingType.IsInterface && TypeHelpers.ImplementsInterface(otherType.FoundMatchingType, thisType.FoundMatchingType)) {
                         parameterRating.AddCastableMatch();
                         continue;
                     }
 
-                    if (TypeExtensions.IsImplicitCastableTo(otherType.FoundMatchingType, thisType.FoundMatchingType)) {
+                    if (TypeHelpers.IsImplicitCastableTo(otherType.FoundMatchingType, thisType.FoundMatchingType)) {
                         parameterRating.AddCastableMatch();
                         continue;
                     }
 
-                    if (TypeExtensions.InheritFromClass(otherType.FoundMatchingType, thisType.FoundMatchingType, true, false)) {
-                        parameterRating.AddInheritanceLevel(TypeExtensions.InheritFromClassLevel(otherType.FoundMatchingType, thisType.FoundMatchingType));
+                    if (TypeHelpers.InheritFromClass(otherType.FoundMatchingType, thisType.FoundMatchingType, true, false)) {
+                        parameterRating.AddInheritanceLevel(TypeHelpers.InheritFromClassLevel(otherType.FoundMatchingType, thisType.FoundMatchingType));
                         continue;
                     }
 
