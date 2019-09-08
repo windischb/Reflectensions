@@ -70,7 +70,7 @@ namespace Reflectensions
 
         private MethodNameRating GetMethodNameRating(string searchMethodName) {
             var methodNameRating = new MethodNameRating();
-            methodNameRating.SetNamingDiff(StringExtensions.DifferencesCount(MethodName, searchMethodName));
+            methodNameRating.SetNamingDiff(StringHelpers.DifferencesCount(MethodName, searchMethodName));
             return methodNameRating;
         }
 

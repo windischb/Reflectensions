@@ -3,7 +3,7 @@ using Reflectensions.Helpers;
 
 namespace Reflectensions.HelperClasses {
 
-    public class Enum<T> where T : struct, System.Enum, IConvertible
+    public class Enum<T> where T : struct, Enum, IConvertible
     {
 
         public static T Find(string value, T ifNotFound = default(T)) {
