@@ -23,7 +23,7 @@ namespace Reflectensions.ExtensionMethods {
 
             var searchValue = name.Contains(".") ? $"{methodInfo.ReflectedType}.{methodInfo.Name}" : methodInfo.Name;
 
-            return Reflectensions.StringExtensions.DifferencesCount(searchValue, name);
+            return StringHelpers.DifferencesCount(searchValue, name);
         }
 
         public static bool HasParametersLengthOf(this MethodInfo methodInfo, int paramterLength, bool includeOptional = false, bool throwOnError = true) {
