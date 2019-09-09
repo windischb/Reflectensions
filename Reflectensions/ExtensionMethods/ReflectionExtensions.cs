@@ -2,35 +2,14 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods {
     public static class ReflectionExtensions {
 
-        public static T GetPropertyValue<T>(this object @object, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {
-            var type = @object.GetType();
+        public static T GetPropertyValue<T>(this object @object, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) => ReflectionHelpers.GetPropertyValue<T>(@object, fieldName, bindingFlags);
+        public static T GetPropertyValue<T>(this Type type, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) => ReflectionHelpers.GetPropertyValue<T>(type, fieldName, bindingFlags);
+        public static PropertyInfo GetProperty(Type t, string name, BindingFlags flags) => ReflectionHelpers.GetProperty(t, name, flags);
 
-            var property = GetProperty(type, fieldName, bindingFlags);
-            var value = property.GetValue(@object);
-            return (T)value;
-        }
-
-        public static T GetPropertyValue<T>(this Type type, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {
-            var property = type.GetProperty(fieldName, bindingFlags);
-            var value = property.GetValue(type);
-            return (T)value;
-        }
-
-        public static PropertyInfo GetProperty(Type t, string name, BindingFlags flags) {
-
-            var field = t.GetProperty(name, flags);
-            if (field != null)
-                return field;
-
-            if (t.BaseType != null)
-                return GetProperty(t.BaseType, name, flags);
-
-            return null;
-
-        }
     }
 }

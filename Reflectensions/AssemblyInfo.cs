@@ -1,3 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("doob.Reflectensions.Tests")]
+[assembly: InternalsVisibleTo("Reflectensions.Json")]
+[assembly: InternalsVisibleTo("Reflectensions.Tests")]

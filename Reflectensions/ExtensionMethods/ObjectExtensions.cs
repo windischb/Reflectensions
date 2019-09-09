@@ -1,164 +1,36 @@
 ﻿using System;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods {
     public static class ObjectExtensions {
 
-        public static T ConvertTo<T>(this object @object, bool throwOnError = true, T returnOnError = default(T)) {
-            return (T)ConvertTo(@object, typeof(T), throwOnError, returnOnError);
-            
-        }
+        //public static T ConvertTo<T>(this object @object, bool throwOnError = true, T returnOnError = default(T)) => ObjectHelpers.ConvertTo<T>(@object, throwOnError, returnOnError);
 
-        public static object ConvertTo(this object @object, Type outType, bool throwOnError = true, object returnOnError = null) {
+        //public static object ConvertTo(this object @object, Type outType, bool throwOnError = true, object returnOnError = null) => ObjectHelpers.ConvertTo(@object, outType, throwOnError, returnOnError);
 
-           
-            var result = TryConvertTo(@object, outType, out var outValue);
-            if (result)
-                return outValue;
+        //public static bool TryConvertTo<T>(this object @object, out T outValue) => ObjectHelpers.TryConvertTo<T>(@object, out outValue);
 
+        //public static bool TryConvertTo(this object @object, Type outType, out object outValue) => ObjectHelpers.TryConvertTo(@object, outType, out outValue);
 
-            if (!throwOnError) {
-                if (returnOnError != null) {
-                    return returnOnError;
-                }
-                return outType.IsValueType ? Activator.CreateInstance(outType) : null;
-            }
-            throw new InvalidCastException($"Can't cast object of Type '{@object.GetType()}' to '{outType}'.");
+        public static bool TryConvertToBoolean(object value, params object[] trueValues) => ObjectHelpers.TryConvertToBoolean(value, trueValues);
 
-        }
-
-        public static bool TryConvertTo<T>(this object @object, out T outValue) {
+        public static bool EqualsToAnyOf(object value, params object[] equalsto) => ObjectHelpers.EqualsToAnyOf(value, equalsto);
 
 
-            var result = TryConvertTo(@object, typeof(T), out var _outValue);
-
-            outValue = _outValue != null ? (T)_outValue : default(T);
-            return result;
-        }
-
-        public static bool TryConvertTo(this object @object, Type outType, out object outValue) {
-
-
-            if (@object == null) {
-                outValue = null;
-                return false;
-            }
-
-
-            var t = @object.GetType();
-
-            if (t == outType) {
-                outValue = @object;
-                return true;
-            }
-
-            if (t.ImplementsInterface(outType, false) || t.InheritFromClass(outType, true)) {
-                outValue = @object;
-                return true;
-            }
-
-
-            try {
+        public static bool TryAs(this object @object, Type outType, out object outValue) => ObjectHelpers.TryAs(@object, outType, out outValue);
+        public static bool TryAs<T>(this object @object, out T outValue) => ObjectHelpers.TryAs<T>(@object, out outValue);
+        public static object As(this object @object, Type outType) => ObjectHelpers.As(@object, outType);
+        public static T As<T>(this object @object) => ObjectHelpers.As<T>(@object);
 
 
 
-                if (@object.GetType().ImplementsInterface<IConvertible>() && outType.ImplementsInterface<IConvertible>()) {
-                    outValue = Convert.ChangeType(@object, outType);
-                    return true;
-                }
-
-                var method = t.GetImplicitCastMethodTo(outType);
-
-                if (method != null) {
-                    outValue = method.Invoke(null, new object[] {
-                        @object
-                    });
-                    return true;
-                }
 
 
-
-                if (outType.IsNullableType()) {
-                    var underlingType = Nullable.GetUnderlyingType(outType);
-                    if (TryConvertTo(@object, underlingType, out var innerValue)) {
-                        outValue = innerValue;
-                        return true;
-                    } else {
-                        if (!JsonExtensions.IsAvailable) {
-                            outValue = Activator.CreateInstance(outType);
-                            return false;
-                        }
-                        
-                    }
-                    
-                }
-
-                if (JsonExtensions.IsAvailable) {
-                    try {
-                        outValue = JsonExtensions.ConvertTo(@object, outType);
-                        return true;
-                    } catch (Exception e) {
-                        outValue = null;
-                        return false;
-                    }
-
-                }
+        public static bool TryTo(this object @object, Type outType, out object outValue) => ObjectHelpers.TryTo(@object, outType, out outValue);
+        public static bool TryTo<T>(this object @object, out T outValue) => ObjectHelpers.TryTo<T>(@object, out outValue);
+        public static object To(this object @object, Type outType, bool throwOnError = true, object returnOnError = null) => ObjectHelpers.To(@object, outType, throwOnError, returnOnError);
+        public static T To<T>(this object @object, bool throwOnError = true, T returnOnError = default(T)) => ObjectHelpers.To<T>(@object, throwOnError, returnOnError);
 
 
-
-            } catch {
-
-                outValue = null;
-                return false;
-
-            }
-
-            outValue = null;
-            return false;
-
-
-        }
-
-      
-        public static bool TryConvertToBoolean(this object value, params object[] trueValues) {
-
-            if (EqualsToAny(trueValues))
-                return true;
-
-            if (value == null)
-                return false;
-
-            if (value is bool boolValue)
-                return boolValue;
-
-
-
-            var str = value.ToString();
-            if (int.TryParse(str, out var numb)) {
-                return numb > 0;
-            }
-
-            if (bool.TryParse(str, out var ret)) {
-                return ret;
-            }
-
-
-            if (str.ToLower() == "yes") {
-                return true;
-            }
-
-            return ret;
-        }
-
-
-        public static bool EqualsToAny(this object value, params object[] equalsto) {
-
-            foreach (var trueValue in equalsto) {
-                if (value == trueValue) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }

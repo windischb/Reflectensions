@@ -46,7 +46,7 @@ namespace Reflectensions.Tests
 
             _output.WriteLine(new Json().ToJson(t, true));
         }
-       
+
 
     }
 }

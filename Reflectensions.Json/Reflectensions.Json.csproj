@@ -1,21 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>Reflectensions</RootNamespace>
     <PackageId>Reflectensions.Json</PackageId>
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
-    <AssemblyName>ReflectensionsJson</AssemblyName>
-    <Version>2.2.3</Version>
+    <AssemblyName>Reflectensions.Json</AssemblyName>
+    <Version>3.0.0</Version>
     <Product>Reflectensions.Json</Product>
+    <PackageProjectUrl>https://github.com/windischb/Reflectensions</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2">
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reflectensions" Version="2.2.3" />
+    <PackageReference Include="Reflectensions" Version="3.0.1" />
   </ItemGroup>
 
 </Project>

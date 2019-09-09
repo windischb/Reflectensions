@@ -1,24 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods {
-    public static class IDictionaryExtensions {
+    public static class IDictionaryHelpers {
 
-        public static T GetValueAs<T>(this IDictionary<string, object> dictionary, string key, T orDefault = default) {
-            if(dictionary.TryGetValueAs<T>(key, out var val))
+        public static T GetValueAs<T>(IDictionary<string, object> dictionary, string key, T orDefault = default) {
+            if(TryGetValueAs<T>(dictionary, key, out var val))
                 return val;
 
             return orDefault;
         }
 
-        public static bool TryGetValueAs<T>(this IDictionary<string, object> dictionary, string key, out T value) {
+        public static bool TryGetValueAs<T>(IDictionary<string, object> dictionary, string key, out T value) {
 
             if (!dictionary.ContainsKey(key)) {
                 value = default;
                 return false;
             }
 
-            if (dictionary[key].TryConvertTo<T>(out var converted)) {
+            if (ObjectHelpers.TryAs<T>(dictionary[key], out var converted)) {
+                value = converted;
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
+
+        public static T GetValueTo<T>(IDictionary<string, object> dictionary, string key, T orDefault = default) {
+            if (TryGetValueTo<T>(dictionary, key, out var val))
+                return val;
+
+            return orDefault;
+        }
+
+        public static bool TryGetValueTo<T>(IDictionary<string, object> dictionary, string key, out T value) {
+
+            if (!dictionary.ContainsKey(key)) {
+                value = default;
+                return false;
+            }
+
+            if (ObjectHelpers.TryTo<T>(dictionary[key], out var converted)) {
                 value = converted;
                 return true;
             }
@@ -28,12 +52,7 @@ namespace Reflectensions.ExtensionMethods {
         }
 
 
-        public static IDictionary<string, T> ToCaseInsensitiveIDictionary<T>(this IDictionary<string, T> dict) {
-
-            return new Dictionary<string, T>(dict, StringComparer.OrdinalIgnoreCase);
-        }
-
-        public static Dictionary<string, T> ToCaseInsensitiveDictionary<T>(this IDictionary<string, T> dict) {
+        public static Dictionary<string, T> ToCaseInsensitiveDictionary<T>(IDictionary<string, T> dict) {
 
             return new Dictionary<string, T>(dict, StringComparer.OrdinalIgnoreCase);
         }

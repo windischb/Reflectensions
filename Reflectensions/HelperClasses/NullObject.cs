@@ -1,5 +1,5 @@
 ﻿namespace Reflectensions.HelperClasses {
 
-    internal class NullObject { }
+    public class NullObject { }
 
 }
