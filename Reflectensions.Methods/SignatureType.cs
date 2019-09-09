@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Reflectensions.ExtensionMethods;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
 
 namespace Reflectensions {
 

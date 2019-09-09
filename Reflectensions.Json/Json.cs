@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using Reflectensions.Helpers;
+using Reflectensions.HelperClasses;
 using Reflectensions.JsonConverters;
 
 // ReSharper disable UnusedMember.Global

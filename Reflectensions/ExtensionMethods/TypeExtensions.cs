@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Reflectensions.ExtensionMethods;
-using Reflectensions.HelperClasses;
+using Reflectensions.Helper;
 
-namespace Reflectensions.Helpers {
+namespace Reflectensions.ExtensionMethods {
     public static class TypeExtensions {
 
         #region Check

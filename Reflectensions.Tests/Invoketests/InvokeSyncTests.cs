@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using Reflectensions.ExtensionMethods;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
 using Reflectensions.Tests.Classes;
 using Xunit;
 using Xunit.Abstractions;
+
 
 namespace Reflectensions.Tests.Invoketests
 {
@@ -83,11 +84,11 @@ namespace Reflectensions.Tests.Invoketests
             var building = new Building(7);
             building.WindowCount = 78;
 
-            var type = TypeHelper.FindType("Newtonsoft.Json.JsonConvert");
+            var type = TypeHelpers.FindType("Newtonsoft.Json.JsonConvert");
             var json = _mm.InvokeMethod<string>(type, "SerializeObject", building);
             _output.WriteLine(json);
 
-            var jType = TypeHelper.FindType("Reflectensions.Json").CreateInstance();
+            var jType = TypeHelpers.FindType("Reflectensions.Json").CreateInstance();
             var json2 = _mm.InvokeMethod<string>(jType, "ToJson", building, true);
             _output.WriteLine(json2);
 
@@ -97,11 +98,11 @@ namespace Reflectensions.Tests.Invoketests
             var json4 = _mm.InvokeMethod<string>(null, "Reflectensions.Json.ToJson", building, true);
             _output.WriteLine(json4);
 
-            var json5 = _mm.InvokeMethod<string>(TypeHelper.FindType("Reflectensions.Json"), "ToJson", building, true);
+            var json5 = _mm.InvokeMethod<string>(TypeHelpers.FindType("Reflectensions.Json"), "ToJson", building, true);
             _output.WriteLine(json5);
 
             
-            var obj = _mm.InvokeGenericMethod<Building, Building>(TypeHelper.FindType("Reflectensions.Json"), "ToObject", json5);
+            var obj = _mm.InvokeGenericMethod<Building, Building>(TypeHelpers.FindType("Reflectensions.Json"), "ToObject", json5);
 
 
         }

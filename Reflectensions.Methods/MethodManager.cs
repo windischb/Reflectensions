@@ -4,7 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Reflectensions.ExtensionMethods;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
+using Reflectensions.HelperClasses;
 
 namespace Reflectensions {
     public class MethodManager<TBox> where TBox : IMethodBox {
@@ -51,7 +52,7 @@ namespace Reflectensions {
 
                 if (enumerable.Length > i) {
 
-                    return enumerable[i].ConvertTo(p.ParameterType, false);
+                    return enumerable[i].To(p.ParameterType, false);
                 }
 
                 return p.DefaultValue;
@@ -154,7 +155,7 @@ namespace Reflectensions {
                 //var resultProperty = typeof(Task<>).MakeGenericType(methodInfo.ReturnType.GetGenericArguments().FirstOrDefault()).GetProperty("Result");
                 //returnObject = resultProperty?.GetValue(task);
             } else {
-                returnObject = methodInfo.Invoke(instance, enumerable).ConvertTo<T>(false);
+                returnObject = methodInfo.Invoke(instance, enumerable).To<T>(false);
             }
 
             return returnObject; // != null ? returnObject.ConvertTo<T>() : default(T);
@@ -194,7 +195,7 @@ namespace Reflectensions {
                 return default;
             }
 
-                var isTaskReturn = methodInfo.ReturnType.IsGenericType && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>);
+            var isTaskReturn = methodInfo.ReturnType.IsGenericType && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>);
 
             var returnType = methodInfo.ReturnType;
             if (isTaskReturn) {
@@ -216,7 +217,7 @@ namespace Reflectensions {
                 returnObject = await Task.Run(() => methodInfo.Invoke(instance, enumerable));
             }
 
-            return returnObject.ConvertTo<T>(false);
+            return returnObject.To<T>(false);
 
         }
 

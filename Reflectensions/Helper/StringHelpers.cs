@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Reflectensions.HelperClasses;
 
-namespace Reflectensions.Helpers {
+namespace Reflectensions.Helper {
     public static class StringHelpers {
 
         public static string[] Split(string value, string split, StringSplitOptions options) {
@@ -323,18 +323,18 @@ namespace Reflectensions.Helpers {
                 return dateTime;
             }
 
-            if (JsonHelpers.IsAvailable) {
-                try {
-                    string vstr = value;
-                    if (!vstr.StartsWith("\"") && !vstr.EndsWith("\""))
-                        vstr = $"\"{value}\"";
+            //if (JsonHelpers.IsAvailable) {
+            //    try {
+            //        string vstr = value;
+            //        if (!vstr.StartsWith("\"") && !vstr.EndsWith("\""))
+            //            vstr = $"\"{value}\"";
 
-                    dateTime = JsonHelpers.ConvertTo<DateTime>(vstr);
-                    return dateTime;
-                } catch {
-                    // ignored
-                }
-            }
+            //        dateTime = JsonHelpers.ConvertTo<DateTime>(vstr);
+            //        return dateTime;
+            //    } catch {
+            //        // ignored
+            //    }
+            //}
 
 
             return null;

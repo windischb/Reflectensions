@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
-namespace Reflectensions.Helpers {
+namespace Reflectensions.Helper {
     public static class ReflectionHelpers {
 
         public static T GetPropertyValue<T>(object @object, string fieldName, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance) {

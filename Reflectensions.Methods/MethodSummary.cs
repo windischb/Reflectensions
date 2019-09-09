@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Reflectensions.ExtensionMethods;
+using Reflectensions.Helper;
 using Reflectensions.HelperClasses;
-using Reflectensions.Helpers;
 using Reflectensions.Ratings;
 
 namespace Reflectensions

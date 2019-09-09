@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Reflectensions.Helper;
 using Reflectensions.HelperClasses;
-using Reflectensions.Helpers;
 
 namespace Reflectensions.ExtensionMethods {
     public static class MethodInfoExtensions {

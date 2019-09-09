@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods {
     public static class ReflectionExtensions {

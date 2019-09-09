@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Reflectensions.ExtensionMethods;
 using Reflectensions.HelperClasses;
 
-namespace Reflectensions.Helpers {
+namespace Reflectensions.Helper {
     public static class TypeHelpers {
         #region Constants
 
@@ -52,7 +51,7 @@ namespace Reflectensions.Helpers {
         public static bool IsGenericTypeOf<T>(Type type, bool throwOnError = true) {
             return IsGenericTypeOf(type, typeof(T), throwOnError);
         }
-        
+
 
         public static bool IsNullableType(Type type, bool throwOnError = true) {
             if (Throw.IfIsNull(type, nameof(type), throwOnError))
@@ -136,22 +135,32 @@ namespace Reflectensions.Helpers {
         public static bool IsImplicitCastableTo<T>(Type type, bool throwOnError = true) {
             return IsImplicitCastableTo(type, typeof(T), throwOnError);
         }
-        public static bool IsImplicitCastableTo(this Type type, Type to, bool throwOnError = true) {
+        public static bool IsImplicitCastableTo(Type type, Type to, bool throwOnError = true) {
 
             if (Throw.IfIsNull(type, nameof(type), throwOnError) || Throw.IfIsNull(to, nameof(to), throwOnError))
                 return false;
 
-            var castable = false;
 
             if (IsNumericType(type) && IsNumericType(to)) {
-                castable = ImplicitNumericConversionsTable[type].Contains(to);
+                if (ImplicitNumericConversionsTable[type].Contains(to))
+                    return true;
             }
 
-            if (!castable) {
-                castable = GetImplicitCastMethodTo(type, to) != null;
+            if (ImplementsInterface(type, to, false) || InheritFromClass(type, to, true)) {
+                return true;
             }
 
-            return castable;
+            if(GetImplicitCastMethodTo(type, to) != null)
+                return true;
+
+            if (TypeHelpers.IsNullableType(to)) {
+                var underlingType = Nullable.GetUnderlyingType(to);
+                if (IsImplicitCastableTo(type, underlingType, throwOnError)) {
+                    return true;
+                }
+            }
+
+            return false;
 
         }
 

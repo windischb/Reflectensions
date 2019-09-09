@@ -1,5 +1,5 @@
 ﻿using System;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods
 {

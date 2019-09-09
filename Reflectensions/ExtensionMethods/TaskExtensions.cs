@@ -83,7 +83,7 @@ namespace Reflectensions.ExtensionMethods {
             if (obj == null)
                 return default;
 
-            return await Task.FromResult(obj.ConvertTo<TResult>(throwOnError, returnOnError));
+            return await Task.FromResult(obj.To<TResult>(throwOnError, returnOnError));
         }
 
     }

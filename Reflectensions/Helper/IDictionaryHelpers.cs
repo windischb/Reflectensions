@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Reflectensions.ExtensionMethods;
 
-namespace Reflectensions.ExtensionMethods {
+namespace Reflectensions.Helper {
     public static class IDictionaryExtensions {
 
         public static T GetValueAs<T>(this IDictionary<string, object> dictionary, string key, T orDefault = default) => IDictionaryHelpers.GetValueAs<T>(dictionary, key, orDefault);

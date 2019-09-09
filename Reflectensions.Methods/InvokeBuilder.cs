@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Reflectensions.ExtensionMethods;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
+using Reflectensions.HelperClasses;
 
 namespace Reflectensions
 {

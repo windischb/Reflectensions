@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://github.com/windischb/Reflectensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/windischb/Reflectensions</RepositoryUrl>
     <PackageId>Reflectensions</PackageId>
-    <Version>3.0.0-beta1</Version>
+    <Version>3.0.1</Version>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 
