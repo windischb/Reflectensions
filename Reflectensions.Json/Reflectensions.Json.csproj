@@ -6,7 +6,7 @@
     <PackageId>Reflectensions.Json</PackageId>
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
-    <AssemblyName>ReflectensionsJson</AssemblyName>
+    <AssemblyName>Reflectensions.Json</AssemblyName>
     <Version>2.2.3</Version>
     <Product>Reflectensions.Json</Product>
   </PropertyGroup>

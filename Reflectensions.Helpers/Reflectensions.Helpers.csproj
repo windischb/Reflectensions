@@ -5,8 +5,4 @@
     <RootNamespace>Reflectensions</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Reflectensions.Common\Reflectensions.Common.csproj" />
-  </ItemGroup>
-
 </Project>

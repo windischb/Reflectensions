@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Reflectensions</AssemblyName>
+    <AssemblyName>Reflectensions.Methods</AssemblyName>
     <RootNamespace>Reflectensions</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reflectensions.Helpers\Reflectensions.Helpers.csproj" />
+    <ProjectReference Include="..\Reflectensions\Reflectensions.csproj" />
   </ItemGroup>
 
 </Project>
