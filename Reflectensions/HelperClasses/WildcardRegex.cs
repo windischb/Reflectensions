@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Reflectensions.Helpers
+namespace Reflectensions.HelperClasses
 {
 
     public class Wildcard : Regex {

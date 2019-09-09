@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Reflectensions.Helpers {
+namespace Reflectensions.Helper {
     public static class JsonHelpers {
 
         private static Type _jsonType = null;

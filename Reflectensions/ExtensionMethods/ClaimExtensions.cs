@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods
 {

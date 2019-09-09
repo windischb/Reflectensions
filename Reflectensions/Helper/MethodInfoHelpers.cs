@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Reflectensions.HelperClasses;
 
-namespace Reflectensions.Helpers {
+namespace Reflectensions.Helper {
     public static class MethodInfoHelpers {
 
         public static bool HasName(MethodInfo methodInfo, string name, bool throwOnError = true) {

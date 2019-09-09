@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Reflectensions
+namespace Reflectensions.HelperClasses
 {
     [Flags]
     public enum MethodAccessModifier

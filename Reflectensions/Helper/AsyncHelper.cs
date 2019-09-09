@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Reflectensions.Helpers
+namespace Reflectensions.Helper
 {
     public static class AsyncHelper
     {

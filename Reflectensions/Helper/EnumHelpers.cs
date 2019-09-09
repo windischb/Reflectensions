@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Reflectensions.Helpers
+namespace Reflectensions.Helper
 {
     public static class EnumHelpers
     {

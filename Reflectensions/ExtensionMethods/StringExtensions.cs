@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using Reflectensions.Helpers;
+using Reflectensions.Helper;
+using Reflectensions.HelperClasses;
 
 namespace Reflectensions.ExtensionMethods {
     public static class StringExtensions {

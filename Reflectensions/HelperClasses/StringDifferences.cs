@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Reflectensions.Helpers;
-using System.Linq;
 
-namespace Reflectensions {
+namespace Reflectensions.HelperClasses {
 
     public class StringDifferences {
 

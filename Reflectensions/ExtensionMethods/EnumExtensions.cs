@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Reflectensions.Helper;
 using Reflectensions.HelperClasses;
-using Reflectensions.Helpers;
 
 namespace Reflectensions.ExtensionMethods {
     public static class EnumExtensions {

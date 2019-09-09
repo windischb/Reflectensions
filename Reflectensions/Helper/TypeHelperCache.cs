@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Reflectensions
+namespace Reflectensions.Helper
 {
     internal static class TypeHelperCache
     {
