@@ -39,12 +39,12 @@ namespace Reflectensions.Tests
 
 
             var names = value.GetName();
-            
+
             var json = new Json();
             json.RegisterJsonConverter<StringEnumConverter>();
 
             var js = json.ToJson(value);
-            
+
 
             _output.WriteLine($"GetName() - '{names}'");
 

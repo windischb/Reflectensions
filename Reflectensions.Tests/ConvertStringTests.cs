@@ -24,15 +24,23 @@ namespace Reflectensions.Tests
         [InlineData("915148798.75")]
         [InlineData("December 17, 1995 03:24:00")]
 
-        public async Task ConvertToDateTime(string value) {
+        public void ConvertNullableToDateTime(string value) {
 
             var dt = value.ToNullableDateTime();
 
             _output.WriteLine(dt.ToString());
+        }
 
-            var t = await Task.Run(() => "December 17, 1995 03:24:00").ConvertToTaskOf<DateTime>();
+        [Theory]
+        [InlineData(@"\/Date(1198908717056)\/")]
+        [InlineData("2012-03-19T07:22Z")]
+        [InlineData("December 17, 1995 03:24:00")]
 
-            var z = await Task.Run(() => Console.WriteLine("Test")).ConvertToTaskOf<string>();
+        public void ConvertToDateTime(string value) {
+
+            var dt = value.ToDateTime();
+
+            _output.WriteLine(dt.ToString());
         }
 
         [Fact]
@@ -40,7 +48,7 @@ namespace Reflectensions.Tests
 
 
 
-            IEnumerable<string> ienum = new List<string>(){"eins", "zwei", "drei"};
+            IEnumerable<string> ienum = new List<string>() { "eins", "zwei", "drei" };
 
             List<string> t = await Task.Run(() => ienum).ConvertToTaskOf<List<string>>();
 

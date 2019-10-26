@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Reflectensions.ExtensionMethods;
 using Reflectensions.Helper;
 using Reflectensions.Tests.Classes;
@@ -7,12 +8,10 @@ using Xunit;
 using Xunit.Abstractions;
 
 
-namespace Reflectensions.Tests.Invoketests
-{
-    public class InvokeSyncTests
-    {
+namespace Reflectensions.Tests.Invoketests {
+    public class InvokeSyncTests {
         private readonly TimeSpan _delay = TimeSpan.FromSeconds(1);
-        private readonly MethodManager _mm = new MethodManager(options => options.EnableCache());
+
 
         private readonly ITestOutputHelper _output;
 
@@ -23,18 +22,18 @@ namespace Reflectensions.Tests.Invoketests
         [Fact]
         public void InvokeSync_int() {
             var building = new Building(7);
-            var count = _mm.InvokeMethod<int>(building, "CountFloors");
+            var method = building.GetType().GetMethod("CountFloors");
+
+            var count = InvokeHelper.InvokeMethod<int>(building, method);
+
             Assert.Equal(7, count);
-
-
-            _mm.InvokeMethod(building, builder => builder.WithMethodName("CountFloors"));
         }
 
         [Fact]
-        public void InvokeSync_int_TO_long()
-        {
+        public void InvokeSync_int_TO_long() {
             var building = new Building(7);
-            var count = _mm.InvokeMethod<long>(building, "CountFloors");
+            var method = building.GetType().GetMethod("CountFloors");
+            var count = InvokeHelper.InvokeMethod<long>(building, method);
             Assert.Equal(7, count);
         }
 
@@ -44,20 +43,21 @@ namespace Reflectensions.Tests.Invoketests
             var building = new Building(7);
             var sw = new Stopwatch();
             sw.Start();
-            _mm.InvokeMethod(building, builder => builder.WithMethodName("OpenMainDoorAsync").WithParameters(_delay));
+            var method = building.GetType().GetMethod("OpenMainDoorAsync");
+            InvokeHelper.InvokeVoidMethod(building, method, _delay);
             sw.Stop();
 
             Assert.True(sw.Elapsed >= _delay);
         }
 
         [Fact]
-        public void InvokeSync_Task_OF_int()
-        {
+        public void InvokeSync_Task_OF_int() {
 
             var building = new Building(7);
             var sw = new Stopwatch();
             sw.Start();
-            var floorCount = _mm.InvokeMethod<int>(building, "CountFloorsAsync", _delay);
+            var method = building.GetType().GetMethod("CountFloorsAsync");
+            var floorCount = InvokeHelper.InvokeMethod<int>(building, method, _delay);
             sw.Stop();
 
             Assert.True(sw.Elapsed >= _delay);
@@ -65,13 +65,13 @@ namespace Reflectensions.Tests.Invoketests
         }
 
         [Fact]
-        public void InvokeSync_Task_OF_int_TO_decimal()
-        {
+        public void InvokeSync_Task_OF_int_TO_decimal() {
 
             var building = new Building(7);
             var sw = new Stopwatch();
             sw.Start();
-            var floorCount = _mm.InvokeMethod<decimal>(building, "CountFloorsAsync", _delay);
+            var method = building.GetType().GetMethod("CountFloorsAsync");
+            var floorCount = InvokeHelper.InvokeMethod<decimal>(building, method, _delay);
             sw.Stop();
 
             Assert.True(sw.Elapsed >= _delay);
@@ -84,25 +84,17 @@ namespace Reflectensions.Tests.Invoketests
             var building = new Building(7);
             building.WindowCount = 78;
 
-            var type = TypeHelpers.FindType("Newtonsoft.Json.JsonConvert");
-            var json = _mm.InvokeMethod<string>(type, "SerializeObject", building);
+            var type = TypeExtensions.FindType("Newtonsoft.Json.JsonConvert");
+            
+            var method = type.GetMethods().WithName("SerializeObject").FirstOrDefault();
+            var json = InvokeHelper.InvokeMethod<string>(null, method, building);
             _output.WriteLine(json);
 
-            var jType = TypeHelpers.FindType("Reflectensions.Json").CreateInstance();
-            var json2 = _mm.InvokeMethod<string>(jType, "ToJson", building, true);
+            var type2 = TypeExtensions.FindType("Reflectensions.Json");
+            var inst2 = Activator.CreateInstance(type2);
+            var method2 = type.GetMethod("ToJson");
+            var json2 = InvokeHelper.InvokeMethod<string>(inst2, method, building, true);
             _output.WriteLine(json2);
-
-            var json3 = _mm.InvokeMethod<string>(null, "Newtonsoft.Json.JsonConvert.SerializeObject", building);
-            _output.WriteLine(json3);
-
-            var json4 = _mm.InvokeMethod<string>(null, "Reflectensions.Json.ToJson", building, true);
-            _output.WriteLine(json4);
-
-            var json5 = _mm.InvokeMethod<string>(TypeHelpers.FindType("Reflectensions.Json"), "ToJson", building, true);
-            _output.WriteLine(json5);
-
-            
-            var obj = _mm.InvokeGenericMethod<Building, Building>(TypeHelpers.FindType("Reflectensions.Json"), "ToObject", json5);
 
 
         }

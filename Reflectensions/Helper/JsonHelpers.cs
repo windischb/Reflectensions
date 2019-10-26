@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Linq;
+using Reflectensions.ExtensionMethods;
 
 namespace Reflectensions.Helper {
     public static class JsonHelpers {
 
-        private static Type _jsonType = null;
-        private static Func<object, string> ToJsonMethod = null;
-        private static Func<string, Type, object> ToObjectMethod = null;
+        private static IJson _json = null;
 
         static JsonHelpers() {
             Initialize();
@@ -19,46 +19,23 @@ namespace Reflectensions.Helper {
             }
             initialized = true;
 
-            _jsonType = TypeHelpers.FindType("Reflectensions.Json");
+            var _jsonType = TypeExtensions.FindType("Reflectensions.Json");
 
-            if(!IsAvailable) {
-                return;
+            if (_jsonType != null) {
+                _json = (IJson)Activator.CreateInstance(_jsonType);
             }
 
-            var jsonInstance = TypeHelpers.CreateInstance(_jsonType);
-
-            var toJsonMethod = jsonInstance.GetType().GetMethod("ToJson");
-            ToJsonMethod = (Func<object, string>) Delegate.CreateDelegate(typeof(Func<object, string>), "ToJson", toJsonMethod);
-
-            var toObjectMethod = jsonInstance.GetType().GetMethod("ToObject");
-            ToObjectMethod = (Func<string, Type, object>)Delegate.CreateDelegate(typeof(Func<string, Type, object>), "ToObject", toObjectMethod);
-
         }
 
-        public static bool IsAvailable => _jsonType != null;
-
-        public static object ConvertTo(object @object, Type type) {
-
+        public static bool IsAvailable() {
             Initialize();
-
-            var json = ToJsonMethod(@object);
-            return ToObjectMethod(json, type);
-
+            return _json != null;
         }
 
-        public static T ConvertTo<T>(object @object) {
-
+        public static IJson Json() {
             Initialize();
 
-            return (T)ConvertTo(@object, typeof(T));
-        }
-
-        public static T ConvertTo<T>(string json) {
-
-            Initialize();
-
-            return (T)ToObjectMethod(json, typeof(T));
-
+            return _json;
         }
 
     }

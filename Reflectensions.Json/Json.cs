@@ -4,13 +4,13 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using Reflectensions.HelperClasses;
 using Reflectensions.JsonConverters;
+using Reflectensions.JsonHelper;
 
 // ReSharper disable UnusedMember.Global
 
 namespace Reflectensions {
-    public class Json {
+    public class Json : IJson {
 
 
         private readonly List<Type> _jsonConversters = new List<Type>();
@@ -18,7 +18,7 @@ namespace Reflectensions {
         private JsonSerializerSettings JsonSerializerSettings { get; }
 
         private JsonSerializer JsonSerializer => JsonSerializer.Create(JsonSerializerSettings);
-        
+
         private JsonFlattener JsonFlattener() => new JsonFlattener(JsonSerializer);
 
 
@@ -146,9 +146,8 @@ namespace Reflectensions {
         }
 
 
-
         public string ToJson(object @object, bool formatted = false) {
-            
+
             var formating = Formatting.None;
             if (formatted)
                 formating = Formatting.Indented;
@@ -164,7 +163,7 @@ namespace Reflectensions {
             return ToJToken(json).ToString(Formatting.None);
         }
 
-        
+
 
         public T ToObject<T>(string json) {
             var jToken = ToJToken(json);
@@ -183,7 +182,7 @@ namespace Reflectensions {
             return jToken != null ? jToken.ToObject<T>(JsonSerializer) : default(T);
         }
 
-       
+
 
         public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(object data) {
             if (data == null)
@@ -202,12 +201,6 @@ namespace Reflectensions {
             return ToDictionary<TKey, TValue>(jToken);
         }
 
-        //public Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(JObject jObject) {
-        //    if (jObject == null)
-        //        return null;
-
-        //    return ToDictionary<TKey, TValue>(jObject);
-        //}
 
         private Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(JToken jToken) {
 
@@ -338,7 +331,7 @@ namespace Reflectensions {
             foreach (var kvp in jObject) {
                 dict.Add(kvp.Key,
                     kvp.Value.Type == JTokenType.Object
-                        ? ToBasicDotNetDictionary((JObject) kvp.Value)
+                        ? ToBasicDotNetDictionary((JObject)kvp.Value)
                         : ToBasicDotNetObject(kvp.Value));
             }
 
