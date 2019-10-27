@@ -140,6 +140,15 @@ namespace Reflectensions.ExtensionMethods {
                 type = type.GetUnderlyingType();
             }
 
+            if (type.IsNumericType()) {
+                try {
+                    outValue = Convert.ChangeType(value, type);
+                    return true;
+                } catch {
+                    // ignored
+                }
+            }
+
             if (value.GetType().ImplementsInterface<IConvertible>() && type.ImplementsInterface<IConvertible>()) {
                 try {
                     outValue = Convert.ChangeType(value, type);

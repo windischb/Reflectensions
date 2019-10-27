@@ -465,6 +465,9 @@ namespace Reflectensions.ExtensionMethods {
                     level++;
 
                     found = loockupType.BaseType == from;
+                    if(found) {
+                        break;
+                    }
                     loockupType = loockupType.BaseType;
                     if (loockupType?.IsGenericType == true) {
                         found = loockupType.GetGenericTypeDefinition() == from;
