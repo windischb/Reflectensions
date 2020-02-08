@@ -153,6 +153,15 @@ namespace Reflectensions.ExtensionMethods {
                     }
                 }
             }
+            
+            if (type.IsNumericType()) {
+                try {
+                    outValue = Convert.ChangeType(value, type);
+                    return true;
+                } catch {
+                    // ignored
+                }
+            }
 
             if (value.GetType().ImplementsInterface<IConvertible>() && type.ImplementsInterface<IConvertible>()) {
                 try {
