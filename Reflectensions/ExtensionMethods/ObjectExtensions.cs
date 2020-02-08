@@ -129,6 +129,8 @@ namespace Reflectensions.ExtensionMethods {
                 outValue = ToBoolean(value);
                 return true;
             }
+
+           
             
             if (TryAs(value, type, out var _outValue)) {
                 outValue = _outValue;
@@ -138,6 +140,18 @@ namespace Reflectensions.ExtensionMethods {
 
             if (type.IsNullableType(false)) {
                 type = type.GetUnderlyingType();
+            }
+
+            if (type == typeof(Guid)) {
+                if(value is string str) {
+                    if (str.IsGuid()) {
+                        outValue = str.ToGuid();
+                        return true;
+                    } else {
+                        outValue = null;
+                        return false;
+                    }
+                }
             }
 
             if (value.GetType().ImplementsInterface<IConvertible>() && type.ImplementsInterface<IConvertible>()) {

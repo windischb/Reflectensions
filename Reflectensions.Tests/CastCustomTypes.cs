@@ -68,5 +68,16 @@ namespace Reflectensions.Tests
             Assert.Equal(_nullInt, double.Parse(value));
             Assert.Equal(_int, double.Parse(value));
         }
+
+        [Theory]
+        [InlineData("a5ac3789-a5ef-4a49-81bb-fc24a6e47244")]
+        public void FromStringToGuid(string value) {
+
+
+
+            Guid? _nullInt = $"{value}!!".To<Guid?>(false);
+            Guid _int = value.To<Guid>();
+            
+        }
     }
 }
