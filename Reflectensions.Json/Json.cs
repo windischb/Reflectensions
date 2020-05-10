@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -344,6 +346,17 @@ namespace Reflectensions {
 
         public IEnumerable<T> ToBasicDotNetObjectEnumerable<T>(JArray jArray, bool ignoreErrors = false) {
             return jArray?.Select(ToObject<T>).ToList();
+        }
+
+        public T FromJsonStreamToObject<T>(Stream stream)
+        {
+            if (stream == null || stream.CanRead == false)
+                return default;
+
+            using var sr = new StreamReader(stream);
+            using var jtr = new JsonTextReader(sr);
+            var searchResult = JsonSerializer.Deserialize<T>(jtr);
+            return searchResult;
         }
 
     }
