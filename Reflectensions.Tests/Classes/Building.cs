@@ -51,5 +51,15 @@ namespace Reflectensions.Tests.Classes
                 return _floors;
             });
         }
+
+
+        public async Task<int> CountFloorsAsync1(TimeSpan? delay, string text) {
+            return await Task.Run(async () => {
+                if (delay.HasValue) {
+                    await Task.Delay(delay.Value).ConfigureAwait(true);
+                }
+                return _floors;
+            });
+        }
     }
 }

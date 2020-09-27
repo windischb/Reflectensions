@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Reflectensions.JsonConverters;
@@ -359,6 +360,13 @@ namespace Reflectensions {
             return searchResult;
         }
 
+
+        private static readonly Lazy<Reflectensions.Json> lazyJson = new Lazy<Reflectensions.Json>(() => new Reflectensions.Json()
+            .RegisterJsonConverter<StringEnumConverter>()
+            .RegisterJsonConverter<DefaultDictionaryConverter>()
+        );
+
+        public static Json Converter => lazyJson.Value;
     }
 }
 

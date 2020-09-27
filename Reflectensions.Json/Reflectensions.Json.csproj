@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
     <AssemblyName>Reflectensions.Json</AssemblyName>
     <Authors>Bernhard Windisch</Authors>
     <Company>-</Company>
@@ -13,7 +13,7 @@
     <PackageId>Reflectensions.Json</PackageId>
     <Product>Reflectensions.Json</Product>
     <RootNamespace>Reflectensions</RootNamespace>
-    <Version>4.1.0</Version>
+    <Version>4.4.0</Version>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 

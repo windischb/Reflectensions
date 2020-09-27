@@ -70,5 +70,19 @@ namespace Reflectensions.Tests.Invoketests {
             Assert.Equal(7, floorCount);
         }
 
+        [Fact]
+        public async Task InvokeAsync_Task_OF_int_TO_decimal_null() {
+
+            var building = new Building(7);
+            var sw = new Stopwatch();
+            sw.Start();
+            var method = building.GetType().GetMethod("CountFloorsAsync1");
+            var floorCount = await InvokeHelper.InvokeMethodAsync<decimal>(building, method, _delay, null);
+            sw.Stop();
+
+            Assert.True(sw.Elapsed >= _delay);
+            Assert.Equal(7, floorCount);
+        }
+
     }
 }
