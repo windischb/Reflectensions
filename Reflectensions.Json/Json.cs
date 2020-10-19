@@ -122,7 +122,13 @@ namespace Reflectensions {
 
         public JToken ToJToken(object @object) {
 
-            return @object == null ? JValue.CreateNull() : JToken.FromObject(@object, JsonSerializer);
+            if (@object == null)
+                return JValue.CreateNull();
+
+            if (@object is JToken jt)
+                return jt;
+
+            return JToken.FromObject(@object, JsonSerializer);
         }
         public JToken ToJToken(string json) {
 
@@ -173,8 +179,18 @@ namespace Reflectensions {
             return ToObject<T>(jToken);
         }
 
+        public T ToObject<T>(object @object) {
+            var jToken = ToJToken(@object);
+            return ToObject<T>(jToken);
+        }
+
         public object ToObject(string json, Type type) {
             var jToken = ToJToken(json);
+            return ToObject(jToken, type);
+        }
+
+        public object ToObject(object @object, Type type) {
+            var jToken = ToJToken(@object);
             return ToObject(jToken, type);
         }
 

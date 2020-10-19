@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Reflectensions.Helper;
 
 namespace Reflectensions.ExtensionMethods {
     public static class ObjectExtensions {
@@ -181,6 +182,14 @@ namespace Reflectensions.ExtensionMethods {
                 return true;
             }
 
+            if (JsonHelpers.IsAvailable()) {
+                try {
+                     outValue = JsonHelpers.Json().ToObject(value, type);
+                } catch {
+                    // ignored
+                }
+            }
+
             outValue = null;
             return false;
 
@@ -215,6 +224,8 @@ namespace Reflectensions.ExtensionMethods {
             return (T)To(value, typeof(T), throwOnError, returnOnError);
         }
 
+
+        
 
     }
 }
