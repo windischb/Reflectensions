@@ -146,6 +146,11 @@ namespace Reflectensions.Helper {
 
         #region WithReturn
 
+        public static object InvokeGenericMethod(object instance, MethodInfo methodInfo, IEnumerable<Type> genericArguments, params object[] parameters) {
+            methodInfo = methodInfo.MakeGenericMethod(genericArguments.ToArray());
+            return InvokeMethod<object>(instance, methodInfo, parameters);
+        }
+
         public static TResult InvokeGenericMethod<TResult>(object instance, MethodInfo methodInfo, IEnumerable<Type> genericArguments, params object[] parameters) {
             methodInfo = methodInfo.MakeGenericMethod(genericArguments.ToArray());
             return InvokeMethod<TResult>(instance, methodInfo, parameters);

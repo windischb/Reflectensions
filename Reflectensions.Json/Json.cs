@@ -349,8 +349,7 @@ namespace Reflectensions {
             return jArray?.Select(ToObject<T>).ToList();
         }
 
-        public T FromJsonStreamToObject<T>(Stream stream)
-        {
+        public T FromJsonStreamToObject<T>(Stream stream) {
             if (stream == null || stream.CanRead == false)
                 return default;
 
@@ -367,6 +366,27 @@ namespace Reflectensions {
         );
 
         public static Json Converter => lazyJson.Value;
+
+
+        private static bool? _newtonsoftJsonAvailable;
+        public static bool NewtonsoftJsonAvailable => _newtonsoftJsonAvailable ??= FindType();
+
+        public static bool FindType() {
+
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (var assembly in assemblies) {
+                var foundType = assembly.GetType("Newtonsoft.Json.JsonSerializer", false, true);
+                if (foundType != null) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
+
 }
+
 
