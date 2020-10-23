@@ -22,7 +22,7 @@ namespace Reflectensions {
             });
             return results;
         }
-
+        
         public JObject Unflatten(IDictionary<string, object> keyValues) {
             JContainer result = null;
             var setting = new JsonMergeSettings {

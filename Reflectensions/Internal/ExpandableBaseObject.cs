@@ -22,7 +22,8 @@ namespace Reflectensions.Internal {
                 if (_instancePropertyInfo == null && _instance != null) {
                     _instancePropertyInfo = _instance
                         .GetType()
-                        .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.IgnoreCase)
+                        .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase)
+                        .Where(p => p.DeclaringType != typeof(ExpandableBaseObject))
                         .ToArray();
                 }
                 return _instancePropertyInfo;

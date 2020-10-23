@@ -185,6 +185,7 @@ namespace Reflectensions.ExtensionMethods {
             if (JsonHelpers.IsAvailable()) {
                 try {
                      outValue = JsonHelpers.Json().ToObject(value, type);
+                     return true;
                 } catch {
                     // ignored
                 }

@@ -264,7 +264,7 @@ namespace Reflectensions {
             return JsonFlattener().Flatten(jsonObject);
         }
 
-
+        
         public JObject Unflatten(IDictionary<string, object> keyValues) {
             return JsonFlattener().Unflatten(keyValues);
         }
