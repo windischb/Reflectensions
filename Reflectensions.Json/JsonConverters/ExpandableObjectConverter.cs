@@ -22,12 +22,17 @@ namespace Reflectensions.JsonConverters {
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
 
-            var jobject = JObject.Load(reader);
-            var dict = Json.Converter.ToDictionary(jobject);
             var exoObj = (IDictionary<string, object>)Activator.CreateInstance(objectType);
-            foreach (var keyValuePair in dict) {
-                exoObj[keyValuePair.Key] = keyValuePair.Value;
+           
+            if (reader.TokenType == JsonToken.StartObject) {
+                var jobject = JObject.Load(reader);
+                var dict = Json.Converter.ToDictionary(jobject);
+                
+                foreach (var keyValuePair in dict) {
+                    exoObj[keyValuePair.Key] = keyValuePair.Value;
+                }
             }
+            
 
             return exoObj;
         }

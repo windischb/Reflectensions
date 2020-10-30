@@ -209,7 +209,7 @@ namespace Reflectensions {
         }
 
         public object ToObject(object @object, Type type) {
-            var jToken = ToJToken(@object);
+            var jToken = ToJson(@object);
             return ToObject(jToken, type);
         }
 

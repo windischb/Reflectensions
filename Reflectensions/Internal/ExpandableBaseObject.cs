@@ -137,12 +137,14 @@ namespace Reflectensions.Internal {
                 .GetMember(name, BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.IgnoreCase).FirstOrDefault();
 
             if (memberInfo?.MemberType == MemberTypes.Property) {
-
-                var propInfo = (PropertyInfo) memberInfo;
-                if (propInfo.PropertyType != value.GetType()) {
-                    value.TryTo(propInfo.PropertyType, out value);
+                var propInfo = (PropertyInfo)memberInfo;
+                if (value != null) {
+                    
+                    if (propInfo.PropertyType != value.GetType()) {
+                        value.TryTo(propInfo.PropertyType, out value);
+                    }
                 }
-                ((PropertyInfo)memberInfo).SetValue(instance, value, null);
+                propInfo.SetValue(instance, value, null);
                 return true;
             }
 

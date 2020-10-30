@@ -40,6 +40,7 @@ namespace Reflectensions.Tests {
             //var dict = Json.Converter.ToDictionary(json);
             
             var ex = Json.Converter.ToObject<Expandable2>(json);
+            
 
             //Assert.Equal(true, dict["Ok"]);
             //Assert.Equal("Bernhard", dict["Name"]);
