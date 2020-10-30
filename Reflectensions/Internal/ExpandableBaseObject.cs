@@ -11,7 +11,7 @@ namespace Reflectensions.Internal {
     /// <summary>
     /// !!! do not use directly !!! -> use ExpandableObject
     /// </summary>
-    public abstract class ExpandableBaseObject : DynamicObject {
+    public abstract partial class ExpandableBaseObject : DynamicObject {
 
         private readonly object _instance;
         private readonly Type _instanceType;
@@ -137,6 +137,11 @@ namespace Reflectensions.Internal {
                 .GetMember(name, BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.IgnoreCase).FirstOrDefault();
 
             if (memberInfo?.MemberType == MemberTypes.Property) {
+
+                var propInfo = (PropertyInfo) memberInfo;
+                if (propInfo.PropertyType != value.GetType()) {
+                    value.TryTo(propInfo.PropertyType, out value);
+                }
                 ((PropertyInfo)memberInfo).SetValue(instance, value, null);
                 return true;
             }
@@ -317,158 +322,9 @@ namespace Reflectensions.Internal {
             return list;
         }
 
-        //public T GetValueOrDefault<T>(string key, T defaultValue = default)
-        //{
-        //    var found = false;
-        //    object _result = null;
-        //    if (TryGetProperty(_instance, key, out var result))
-        //    {
-        //        found = true;
-        //        _result = result;
-        //    }
-
-        //    if (!found)
-        //    {
-        //        if (__Properties.TryGetValue(key, out var prop))
-        //        {
-        //            found = true;
-        //            _result = prop;
-        //        }
-        //    }
-
-        //    if (!found)
-        //    {
-        //        return default;
-        //    }
-
-        //    var typeOfT = typeof(T);
-
-        //    if (_result.GetType() == typeOfT)
-        //    {
-        //        return (T)_result;
-        //    }
-
-        //    if (typeOfT == typeof(ExpandableObject) || typeOfT.IsSubclassOf(typeof(ExpandableObject)))
-        //    {
-        //        return (T)ToExpandableObject(typeOfT, _result);
-        //    }
-
-        //    return defaultValue;
-        //}
-
-        //public T GetValuesOrDefault<T>(string key, T defaultValue = default) where T: ICollection
-        //{
-        //    var found = false;
-        //    object _result = null;
-        //    if (TryGetProperty(_instance, key, out var result))
-        //    {
-        //        found = true;
-        //        _result = result;
-        //    }
-
-        //    if (!found)
-        //    {
-        //        if (__Properties.TryGetValue(key, out var prop))
-        //        {
-        //            found = true;
-        //            _result = prop;
-        //        }
-        //    }
-
-        //    if (!found)
-        //    {
-        //        return default;
-        //    }
-
-        //    var typeOfT = typeof(T);
-
-        //    if (_result.GetType() == typeof(T))
-        //    {
-        //        return (T)_result;
-        //    }
-
-        //    if(typeOfT.gener)
-        //    if (_result is IEnumerable)
-        //    {
-
-        //    }
-
-        //    return defaultValue;
-        //}
 
 
-        private object ToExpandableObject(Type expandableObjectType, object @object) {
-
-
-
-            if (@object is IDictionary<string, object> dict) {
-                var ne = (ExpandableObject)Activator.CreateInstance(expandableObjectType);
-                foreach (var keyValuePair in dict) {
-                    ne[keyValuePair.Key] = keyValuePair.Value;
-                }
-
-                return ne;
-            } else if (@object is ExpandableObject exp) {
-                var ne = (ExpandableObject)Activator.CreateInstance(expandableObjectType);
-                foreach (var keyValuePair in exp.AsDictionary()) {
-                    ne[keyValuePair.Key] = keyValuePair.Value;
-                }
-
-                return ne;
-            } else {
-                var ne = (ExpandableObject)Activator.CreateInstance(expandableObjectType, @object);
-                return ne;
-            }
-        }
-
-        //public TExp GetValueOrDefault<TExp>(string key) where TExp : ExpandableObject
-        //{
-        //    var found = false;
-        //    object _result = null;
-        //    if (TryGetProperty(_instance, key, out var result))
-        //    {
-        //        found = true;
-        //        _result = result;
-        //    }
-
-        //    if (!found)
-        //    {
-        //        if (__Properties.TryGetValue(key, out var prop))
-        //        {
-        //            found = true;
-        //            _result = prop;
-        //        }
-        //    }
-
-
-        //    if (typeof(TExp) == typeof(ExpandableObject) || typeof(TExp).IsSubclassOf(typeof(ExpandableObject)))
-        //    {
-        //        if (_result is IDictionary<string, object> dict)
-        //        {
-        //            var ne = (ExpandableObject)Activator.CreateInstance(typeof(TExp));
-        //            foreach (var keyValuePair in dict)
-        //            {
-        //                ne[keyValuePair.Key] = keyValuePair.Value;
-        //            }
-
-        //            return (TExp)ne;
-        //        }
-        //        else if(_result is ExpandableObject exp)
-        //        {
-        //            var ne = (ExpandableObject)Activator.CreateInstance(typeof(TExp));
-        //            foreach (var keyValuePair in exp.AsDictionary())
-        //            {
-        //                ne[keyValuePair.Key] = keyValuePair.Value;
-        //            }
-
-        //            return (TExp)ne;
-        //        }
-
-
-        //    }
-
-        //    return null;
-        //}
-
+        
+        
     }
 }

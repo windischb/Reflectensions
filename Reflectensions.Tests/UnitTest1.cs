@@ -7,7 +7,7 @@ namespace Reflectensions.Tests {
         [Fact]
         public void Test1() {
 
-            var dt = "2020-09-27T11:02:11.8862206+02:00";
+            var dt = "\"2020-09-27T11:02:11.8862206+02:00\"";
 
             var dt1 = dt.ToDateTime();
 

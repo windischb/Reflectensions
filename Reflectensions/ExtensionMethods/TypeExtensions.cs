@@ -147,7 +147,16 @@ namespace Reflectensions.ExtensionMethods {
         public static bool InheritFromClass<T>(this Type type, bool inherit = false, bool throwOnError = true) {
             return InheritFromClass(type, typeof(T), inherit, throwOnError);
         }
-       
+
+        public static bool InheritFromClass(this Type type, string from, bool inherit = false, bool throwOnError = true) {
+            var fromType = FindType(from);
+            if (fromType == null) {
+                throw new TypeLoadException($"Can't find Type '{from}'");
+            }
+
+            return InheritFromClass(type, fromType, inherit, throwOnError);
+        }
+
         public static bool InheritFromClass(this Type type, Type from, bool inherit = false, bool throwOnError = true) {
 
             int? maxLevel = null;
@@ -433,6 +442,15 @@ namespace Reflectensions.ExtensionMethods {
             return InheritFromClassLevel(type, typeof(T), maximumLevel, throwOnError);
         }
 
+        public static int InheritFromClassLevel(this Type type, string from, int? maximumLevel = null,
+            bool throwOnError = true) {
+            var fromType = FindType(from);
+            if (fromType == null) {
+                throw new TypeLoadException($"Can't find Type '{from}'");
+            }
+
+            return InheritFromClassLevel(type, fromType, maximumLevel, throwOnError);
+        }
         public static int InheritFromClassLevel(this Type type, Type from, int? maximumLevel = null, bool throwOnError = true) {
             if (type == null) {
                 if (throwOnError) {

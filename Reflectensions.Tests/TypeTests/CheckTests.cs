@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Reflectensions.Tests.TypeTests {
     public class CheckTests {
+
         [Theory]
         [InlineData(typeof(int))]
         public void IsNumericType(Type type) {

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Reflectensions.ExtensionMethods;
 using Reflectensions.JsonConverters;
 using Reflectensions.JsonHelper;
 
@@ -117,6 +118,24 @@ namespace Reflectensions {
                 ContractResolver = new DefaultContractResolver()
             };
 
+            RegisterJsonConverter<DecimalJsonConverter>();
+            RegisterJsonConverter<ExpandableObjectConverter>();
+            RegisterJsonConverter<DefaultDictionaryConverter>();
+        }
+
+        public Json(bool ignoreNullValues) {
+
+            JsonSerializerSettings = new JsonSerializerSettings {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = ignoreNullValues ? NullValueHandling.Ignore : NullValueHandling.Include,
+                CheckAdditionalContent = false,
+                ContractResolver = new DefaultContractResolver()
+            };
+
+            RegisterJsonConverter<DecimalJsonConverter>();
+            RegisterJsonConverter<ExpandableObjectConverter>();
             RegisterJsonConverter<DefaultDictionaryConverter>();
         }
 
