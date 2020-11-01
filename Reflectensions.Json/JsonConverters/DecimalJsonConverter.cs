@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Reflectensions.ExtensionMethods;
 
 namespace Reflectensions.JsonConverters {
-    class DecimalJsonConverter : JsonConverter {
+    public class DecimalJsonConverter : JsonConverter {
 
         public override bool CanRead => true;
 

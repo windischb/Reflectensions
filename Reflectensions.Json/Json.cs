@@ -118,7 +118,7 @@ namespace Reflectensions {
                 ContractResolver = new DefaultContractResolver()
             };
 
-            RegisterJsonConverter<DecimalJsonConverter>();
+            //RegisterJsonConverter<DecimalJsonConverter>();
             RegisterJsonConverter<ExpandableObjectConverter>();
             RegisterJsonConverter<DefaultDictionaryConverter>();
         }
@@ -134,7 +134,7 @@ namespace Reflectensions {
                 ContractResolver = new DefaultContractResolver()
             };
 
-            RegisterJsonConverter<DecimalJsonConverter>();
+            //RegisterJsonConverter<DecimalJsonConverter>();
             RegisterJsonConverter<ExpandableObjectConverter>();
             RegisterJsonConverter<DefaultDictionaryConverter>();
         }
