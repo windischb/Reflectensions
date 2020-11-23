@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using Reflectensions.Annotations;
 using Reflectensions.ExtensionMethods;
 using Reflectensions.HelperClasses;
 
@@ -11,7 +14,7 @@ namespace Reflectensions.Internal {
     /// <summary>
     /// !!! do not use directly !!! -> use ExpandableObject
     /// </summary>
-    public abstract partial class ExpandableBaseObject : DynamicObject {
+    public abstract partial class ExpandableBaseObject : DynamicObject, INotifyPropertyChanged {
 
         private readonly object _instance;
         private readonly Type _instanceType;
@@ -84,6 +87,7 @@ namespace Reflectensions.Internal {
             if (_instance != null) {
                 try {
                     if (TrySetProperty(_instance, binder.Name, value)) {
+                        RaisePropertyChanged(binder.Name);
                         return true;
                     }
                 } catch {
@@ -92,6 +96,7 @@ namespace Reflectensions.Internal {
             }
 
             __Properties[binder.Name] = value;
+            RaisePropertyChanged(binder.Name);
             return true;
         }
 
@@ -145,6 +150,7 @@ namespace Reflectensions.Internal {
                     }
                 }
                 propInfo.SetValue(instance, value, null);
+                RaisePropertyChanged(name);
                 return true;
             }
 
@@ -184,10 +190,11 @@ namespace Reflectensions.Internal {
             }
             set {
 
+                
                 if (!TrySetProperty(_instance, key, value)) {
                     __Properties[key] = value;
                 }
-
+                RaisePropertyChanged(key);
             }
         }
 
@@ -325,8 +332,40 @@ namespace Reflectensions.Internal {
         }
 
 
+       
 
-        
-        
+        protected virtual bool SetPropertyChanged<T>(ref T storage, T value, [CallerMemberName] string propertyName = null) {
+            if (EqualityComparer<T>.Default.Equals(storage, value)) return false;
+
+            storage = value;
+            RaisePropertyChanged(propertyName);
+
+            return true;
+        }
+
+        protected virtual bool SetPropertyChanged<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string propertyName = null) {
+            if (EqualityComparer<T>.Default.Equals(storage, value)) return false;
+
+            storage = value;
+            onChanged?.Invoke();
+            RaisePropertyChanged(propertyName);
+
+            return true;
+        }
+
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null) {
+            //TODO: when we remove the old OnPropertyChanged method we need to uncomment the below line
+            //OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+#pragma warning disable CS0618 // Type or member is obsolete
+            OnPropertyChanged(propertyName);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
