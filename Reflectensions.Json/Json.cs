@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -21,7 +23,7 @@ namespace Reflectensions {
 
         private JsonSerializerSettings JsonSerializerSettings { get; }
 
-        private JsonSerializer JsonSerializer => JsonSerializer.Create(JsonSerializerSettings);
+        public JsonSerializer JsonSerializer => JsonSerializer.Create(JsonSerializerSettings);
 
         private JsonFlattener JsonFlattener() => new JsonFlattener(JsonSerializer);
 
@@ -394,6 +396,11 @@ namespace Reflectensions {
             return searchResult;
         }
 
+        public void SerializeToStream(Stream stream, JToken jtoken) {
+            using var sw = new StreamWriter(stream, new UTF8Encoding(false), 8192, true);
+            JsonSerializer.Serialize(sw, jtoken);
+        }
+
 
         private static readonly Lazy<Reflectensions.Json> lazyJson = new Lazy<Reflectensions.Json>(() => new Reflectensions.Json()
             .RegisterJsonConverter<StringEnumConverter>()
@@ -406,7 +413,9 @@ namespace Reflectensions {
         private static bool? _newtonsoftJsonAvailable;
         public static bool NewtonsoftJsonAvailable => _newtonsoftJsonAvailable ??= FindType();
 
-        public static bool FindType() {
+        private static bool FindType() {
+
+            
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 

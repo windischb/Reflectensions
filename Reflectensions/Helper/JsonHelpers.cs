@@ -19,7 +19,7 @@ namespace Reflectensions.Helper {
             }
             initialized = true;
 
-            var _jsonType = TypeExtensions.FindType("Reflectensions.Json");
+            var _jsonType = TypeHelper.FindType("Reflectensions.Json");
 
             if (_jsonType != null) {
                 _json = (IJson)Activator.CreateInstance(_jsonType, new object[] {true});

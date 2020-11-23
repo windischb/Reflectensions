@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Reflectensions.Helper;
 using Reflectensions.HelperClasses;
 
 namespace Reflectensions.ExtensionMethods {
@@ -39,9 +40,7 @@ namespace Reflectensions.ExtensionMethods {
             return NumericTypes.Contains(type);
         }
 
-        public static bool IsNumericType<T>(bool throwOnError = true) {
-            return IsNumericType(typeof(T), throwOnError);
-        }
+        
 
         public static bool IsGenericTypeOf(this Type type, Type genericType, bool throwOnError = true) {
 
@@ -71,9 +70,7 @@ namespace Reflectensions.ExtensionMethods {
             return IsGenericTypeOf(type, typeof(Nullable<>));
         }
 
-        public static bool IsNullableType<T>(bool throwOnError = true) {
-            return IsNullableType(typeof(T), throwOnError);
-        }
+       
 
         public static bool IsEnumerableType(this Type type, bool throwOnError = true) {
 
@@ -93,9 +90,7 @@ namespace Reflectensions.ExtensionMethods {
             return type.GetInterfaces().Contains(typeof(IEnumerable));
         }
 
-        public static bool IsEnumerableType<T>(bool throwOnError = true) {
-            return IsEnumerableType(typeof(T), throwOnError);
-        }
+        
 
         public static bool IsDictionaryType(this Type type, bool throwOnError = true) {
             if (type == null) {
@@ -109,9 +104,7 @@ namespace Reflectensions.ExtensionMethods {
             return IsGenericTypeOf(type, typeof(IDictionary)) || IsGenericTypeOf(type, typeof(IDictionary<,>)) || ImplementsInterface(type, typeof(IDictionary)) || ImplementsInterface(type, typeof(IDictionary<,>));
         }
 
-        public static bool IsDictionaryType<T>(bool throwOnError = true) {
-            return IsDictionaryType(typeof(T), throwOnError);
-        }
+        
 
         public static bool ImplementsInterface<T>(this Type type, bool throwOnError = true) {
             return ImplementsInterface(type, typeof(T), throwOnError);
@@ -149,7 +142,7 @@ namespace Reflectensions.ExtensionMethods {
         }
 
         public static bool InheritFromClass(this Type type, string from, bool inherit = false, bool throwOnError = true) {
-            var fromType = FindType(from);
+            var fromType = TypeHelper.FindType(from);
             if (fromType == null) {
                 throw new TypeLoadException($"Can't find Type '{from}'");
             }
@@ -393,58 +386,14 @@ namespace Reflectensions.ExtensionMethods {
             return Activator.CreateInstance(type, args);
         }
 
-        public static Type FindType(string typeName) {
-
-            if (string.IsNullOrWhiteSpace(typeName))
-                return typeof(void);
-
-
-            lock (TypeHelperCache.TypeFromStringLock) {
-                if (TypeHelperCache.TypeFromString.ContainsKey(typeName))
-                    return TypeHelperCache.TypeFromString[typeName];
-
-                Type foundType = null;
-
-                if (!typeName.Contains(".")) {
-                    foundType = Type.GetType($"System.{typeName}", false, true);
-                }
-
-                if (foundType == null) {
-                    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-                    foreach (var assembly in assemblies) {
-
-                        foundType = assembly.GetType(typeName, false, false);
-                        if (foundType != null) {
-                            break;
-                        }
-
-                    }
-
-                    if (foundType == null) {
-                        foreach (var assembly in assemblies) {
-                            foundType = assembly.GetType(typeName, false, true);
-                            if (foundType != null) {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                TypeHelperCache.TypeFromString.Add(typeName, foundType);
-
-                return foundType;
-            }
-
-        }
-
+       
         public static int InheritFromClassLevel<T>(this Type type, int? maximumLevel = null, bool throwOnError = true) {
             return InheritFromClassLevel(type, typeof(T), maximumLevel, throwOnError);
         }
 
         public static int InheritFromClassLevel(this Type type, string from, int? maximumLevel = null,
             bool throwOnError = true) {
-            var fromType = FindType(from);
+            var fromType = TypeHelper.FindType(from);
             if (fromType == null) {
                 throw new TypeLoadException($"Can't find Type '{from}'");
             }
@@ -511,10 +460,7 @@ namespace Reflectensions.ExtensionMethods {
             return Nullable.GetUnderlyingType(type);
         }
 
-        public static Type GetUnderlyingType<T>() {
-
-            return GetUnderlyingType(typeof(T));
-        }
+        
 
 
 
