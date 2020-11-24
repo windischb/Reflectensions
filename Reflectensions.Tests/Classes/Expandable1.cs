@@ -16,5 +16,7 @@ namespace Reflectensions.Tests.Classes {
         public bool Ok { get; set; }
 
         public DateTime Now { get; set; }
+
+        public List<DateTime> Dates { get; set; }
     }
 }

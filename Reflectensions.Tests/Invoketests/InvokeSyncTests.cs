@@ -84,13 +84,13 @@ namespace Reflectensions.Tests.Invoketests {
             var building = new Building(7);
             building.WindowCount = 78;
 
-            var type = TypeExtensions.FindType("Newtonsoft.Json.JsonConvert");
+            var type = TypeHelper.FindType("Newtonsoft.Json.JsonConvert");
             
             var method = type.GetMethods().WithName("SerializeObject").FirstOrDefault();
             var json = InvokeHelper.InvokeMethod<string>(null, method, building);
             _output.WriteLine(json);
 
-            var type2 = TypeExtensions.FindType("Reflectensions.Json");
+            var type2 = TypeHelper.FindType("Reflectensions.Json");
             var inst2 = Activator.CreateInstance(type2);
             var method2 = type.GetMethod("ToJson");
             var json2 = InvokeHelper.InvokeMethod<string>(inst2, method, building, true);

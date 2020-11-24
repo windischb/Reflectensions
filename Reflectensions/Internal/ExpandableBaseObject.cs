@@ -272,11 +272,11 @@ namespace Reflectensions.Internal {
 
         public T GetValue<T>(string key) {
             if (TryGetProperty(_instance, key, out var result)) {
-                return (T)result;
+                return result.To<T>();
             }
 
             if (__Properties.TryGetValue(key, out var prop)) {
-                return (T)prop;
+                return prop.To<T>();
             }
 
             throw new KeyNotFoundException(key);
