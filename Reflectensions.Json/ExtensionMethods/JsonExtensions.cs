@@ -5,23 +5,18 @@ using Newtonsoft.Json.Linq;
 using Reflectensions.HelperClasses;
 
 
-namespace Reflectensions.ExtensionMethods
-{
-    public static class JsonExtensions
-    {
+namespace Reflectensions.ExtensionMethods {
+    public static class JsonExtensions {
 
-        public static IEnumerable<object> ToBasicDotNetObjectEnumerable(this JArray jArray, bool ignoreErrors = false)
-        {
+        public static IEnumerable<object> ToBasicDotNetObjectEnumerable(this JArray jArray, bool ignoreErrors = false) {
             return jArray?.Select(jToken => jToken.ToBasicDotNetObject()).ToList();
         }
 
-        public static object ToBasicDotNetObject(this JToken jtoken)
-        {
+        public static object ToBasicDotNetObject(this JToken jtoken) {
             if (jtoken == null)
                 return null;
 
-            switch (jtoken.Type)
-            {
+            switch (jtoken.Type) {
                 case JTokenType.None:
                     return null;
                 case JTokenType.Object:
@@ -66,21 +61,16 @@ namespace Reflectensions.ExtensionMethods
 
         }
 
-        public static Dictionary<string, object> ToBasicDotNetDictionary(this JObject jObject)
-        {
+        public static Dictionary<string, object> ToBasicDotNetDictionary(this JObject jObject) {
             if (jObject == null)
                 return null;
 
             var dict = new Dictionary<string, object>();
 
-            foreach (var kvp in jObject)
-            {
-                if (kvp.Value.Type == JTokenType.Object)
-                {
+            foreach (var kvp in jObject) {
+                if (kvp.Value.Type == JTokenType.Object) {
                     dict.Add(kvp.Key, ((JObject)kvp.Value).ToBasicDotNetDictionary());
-                }
-                else
-                {
+                } else {
                     dict.Add(kvp.Key, kvp.Value.ToBasicDotNetObject());
                 }
             }
@@ -114,8 +104,28 @@ namespace Reflectensions.ExtensionMethods
                     return null;
                 case JTokenType.Integer:
                     return jtoken.ToObject<int>();
-                case JTokenType.Float:
-                    return jtoken.ToObject<float>();
+                case JTokenType.Float: {
+                        
+                        var dec = jtoken.ToObject<float>().ToString();
+                        if (dec.IsInt()) {
+                            return dec.ToInt();
+                        }
+
+                        if (dec.IsLong()) {
+                            return dec.ToLong();
+                        }
+
+                        if (dec.IsDouble()) {
+                            return dec.ToDouble();
+                        }
+
+                        if (decimal.TryParse(dec, out var deci)) {
+                            return deci;
+                        }
+
+                        return null;
+                    }
+
                 case JTokenType.String:
                     return jtoken.ToObject<string>();
                 case JTokenType.Boolean:
